@@ -24,7 +24,7 @@ gcc -O3 -march=native -fopenmp -o randomize_celegans   randomize_celegans.c   -l
 
 ## Workflow
 
-Generate N randomized graphs, run the matching finder from `../motif_count/`
+Generate N randomized graphs, run the matching finder from `../motif_count/build/cpu/`
 on each, and compare the observed motif count to the null distribution. See
 the header comment in each `.c` file for command-line options (number of
 swaps, number of nulls, random seed).

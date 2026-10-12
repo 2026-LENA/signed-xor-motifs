@@ -31,9 +31,54 @@ dependency. For example:
 
 ```bash
 cd motif_count
-gcc -O3 -fopenmp -o signed_xor_motif_count signed_xor_motif_count.c -lm
-OMP_NUM_THREADS=$(nproc) ./signed_xor_motif_count <your_edges.csv>
+make cpu CC=gcc
+OMP_NUM_THREADS=$(nproc) ./build/cpu/signed_xor_motif_count <your_edges.csv>
 ```
+
+On Apple Silicon Macs, all three motif counters also support Metal GPU search:
+
+```bash
+cd motif_count
+make metal
+./build/metal/signed_xor_motif_count --gpu <your_edges.csv>
+```
+
+On Linux with an NVIDIA GPU and the CUDA Toolkit:
+
+```bash
+cd motif_count
+make cuda
+./build/cuda/signed_xor_motif_count --gpu <your_edges.csv>
+```
+
+On Windows, use Ubuntu on WSL 2. Install it from **PowerShell as Administrator**:
+
+```powershell
+wsl --install -d Ubuntu
+```
+
+Restart if prompted, open Ubuntu, and complete its username/password setup.
+Then run these commands in the **Ubuntu terminal**, replacing the repository
+and input paths with your own:
+
+```bash
+sudo apt update
+sudo apt install -y build-essential python3
+cd "/mnt/c/Users/YOUR_USERNAME/Desktop/signed-xor-motifs/motif_count"
+make clean
+make cpu CC=gcc
+OMP_NUM_THREADS="$(nproc)" ./build/cpu/drosophila_signed_xor_motif \
+  ../data/drosophila/flywire_fafb_v783_connections.csv
+```
+
+WSL setup follows Microsoft's
+[installation guide](https://learn.microsoft.com/en-us/windows/wsl/install).
+See the [Windows instructions](motif_count/README.md#windows-ubuntu-on-wsl-2)
+for all three counters, path handling, regression tests, and NVIDIA CUDA
+through WSL 2. Windows/WSL execution has not yet been validated for this project.
+
+See [`motif_count/README.md`](motif_count/README.md) for GPU usage, supported
+options, and CPU/GPU validation commands.
 
 The Brian2 component is a Python package:
 

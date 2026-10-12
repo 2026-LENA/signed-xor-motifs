@@ -31,11 +31,12 @@
  *   8. All 8 nodes must be distinct
  *   9. check_subgraph verifies exactly 12 edges, no extras
  *
- * Compile:
- *   gcc -O3 -march=native -fopenmp -o signed_xor_motif_count signed_xor_motif_count.c
+ * Compile (from motif_count/; see README.md for macOS):
+ *   make cpu CC=gcc
  *
  * Run:
- *   OMP_NUM_THREADS=20 ./signed_xor_motif_count [-d] [-n <max_per_type>] <csv_file>
+ *   OMP_NUM_THREADS=20 ./build/cpu/signed_xor_motif_count [-d] [-n <max_per_type>] [--gpu|--cpu] <csv_file>
+ *   GPU builds: make metal (Apple Silicon), make cuda (NVIDIA); see README.md.
  */
 
 #include <stdio.h>
@@ -43,8 +44,10 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-#include <omp.h>
+#include "motif_omp.h"
 #include "uthash.h"
+#include "motif_gpu.h"
+#include <limits.h>
 
 /* ── tunables ─────────────────────────────────────────────── */
 #define INITIAL_CAPACITY 8
@@ -63,6 +66,9 @@ typedef struct node {
     int    id;
     char   label[64];
     int    has_label;
+#ifdef MOTIF_USE_GPU
+    int    gpu_id;
+#endif
 
     int    *out_exc;   double *out_exc_w;  size_t out_exc_count;  size_t out_exc_alloc;
     int    *out_inh;   double *out_inh_w;  size_t out_inh_count;  size_t out_inh_alloc;
@@ -71,6 +77,8 @@ typedef struct node {
 
     UT_hash_handle hh;
 } node_t;
+
+typedef struct { node_t *n; int tidx; } cand_t;
 
 node_t  *nodes      = NULL;
 node_t **node_array = NULL;
@@ -196,7 +204,12 @@ static void build_node_array(void) {
     if (!node_array) { perror("malloc"); exit(1); }
     node_t *n, *tmp;
     int i = 0;
-    HASH_ITER(hh, nodes, n, tmp) node_array[i++] = n;
+    HASH_ITER(hh, nodes, n, tmp) {
+#ifdef MOTIF_USE_GPU
+        n->gpu_id = i;
+#endif
+        node_array[i++] = n;
+    }
 }
 
 /* ── subgraph check ───────────────────────────────────────────
@@ -591,6 +604,68 @@ static long count_for_inh(node_t *inh) {
     return count;
 }
 
+/* ── GPU adapter ──────────────────────────────────────────── */
+#ifdef MOTIF_USE_GPU
+static void emit_gpu_weights(const motif_gpu_match *matches, size_t n, void *context) {
+    (void)context;
+    for (size_t i = 0; i < n; ++i) {
+        const int32_t *id = matches[i].ids;
+        node_t *m[8] = {node_array[id[0]], node_array[id[1]], node_array[id[2]],
+                       node_array[id[3]], node_array[id[5]], node_array[id[4]],
+                       node_array[id[6]], node_array[id[7]]};
+        record_motif_weights(m);
+    }
+}
+
+static int count_gpu_allen(cand_t *candidates, int ncands, uint64_t *counts) {
+    char error[2048] = "";
+    motif_gpu_node_view *views = calloc(node_count ? (size_t)node_count : 1, sizeof(*views));
+    int *anchors = malloc((ncands ? (size_t)ncands : 1) * sizeof(*anchors));
+    if (!views || !anchors) {
+        fprintf(stderr, "Cannot allocate GPU graph views\n");
+        free(views); free(anchors);
+        return 0;
+    }
+    int ok = 1;
+    for (int i = 0; i < node_count && ok; ++i) {
+        node_t *n = node_array[i];
+        const int *lists[3] = {n->out_exc, n->out_inh, n->in_exc};
+        size_t sizes[3] = {n->out_exc_count, n->out_inh_count, n->in_exc_count};
+        views[i].identity = n->has_label && n->label[0] == 'e' ? 1u :
+                            n->has_label && n->label[0] == 'i' ? 2u : 0u;
+        for (int k = 0; k < 3 && ok; ++k) {
+            views[i].counts[k] = sizes[k];
+            if (!sizes[k]) continue;
+            int *dense = malloc(sizes[k] * sizeof(*dense));
+            views[i].lists[k] = dense;
+            if (!dense) { snprintf(error, sizeof(error), "Cannot compact GPU adjacency IDs"); ok = 0; break; }
+            for (size_t j = 0; j < sizes[k]; ++j) {
+                node_t *target;
+                int id = lists[k][j];
+                HASH_FIND_INT(nodes, &id, target);
+                if (!target) { snprintf(error, sizeof(error), "Missing node in GPU graph"); ok = 0; break; }
+                dense[j] = target->gpu_id;
+            }
+        }
+    }
+    motif_gpu_graph packed;
+    if (ok) ok = motif_gpu_pack(&packed, views, node_count, 1, error, sizeof(error));
+    for (int i = 0; i < node_count; ++i)
+        for (int k = 0; k < 3; ++k) free((void *)views[i].lists[k]);
+    free(views);
+    if (ok) {
+        for (int i = 0; i < ncands; ++i) anchors[i] = candidates[i].n->gpu_id;
+        ok = motif_gpu_count(&packed, anchors, ncands, GPU_ALLEN, 1, counts,
+                             weight_stats_prefix ? emit_gpu_weights : NULL, NULL, 0,
+                             error, sizeof(error));
+        motif_gpu_free(&packed);
+    }
+    free(anchors);
+    if (!ok) fprintf(stderr, "GPU error: %s\n", error);
+    return ok;
+}
+#endif
+
 /* ── free graph ───────────────────────────────────────────── */
 static void free_graph(void) {
     node_t *n, *tmp;
@@ -622,7 +697,10 @@ static int type_index(const char *label) {
 static void usage(const char *prog) {
     fprintf(stderr,
         "Usage: %s [-d] [-t <max_rows>] [-n <max_per_type>] [--min-weight <w>]\n"
-        "           [--pivot <node_id>] [--weight-stats <prefix>] [--sample-size <N>] <csv_file>\n"
+        "           [--pivot <node_id>] [--weight-stats <prefix>] [--sample-size <N>]\n"
+        "           [--gpu|--cpu] <csv_file>\n"
+        "  --gpu                   search on the GPU (Metal or CUDA build)\n"
+        "  --cpu                   search on the CPU (default)\n"
         "  -d                      debug: per-neuron counts\n"
         "  -t <max_rows>           limit CSV rows (for testing)\n"
         "  -n <max_per_type>       max neurons per type (0 = all, default)\n"
@@ -641,6 +719,7 @@ static void usage(const char *prog) {
 /* ════════════════════════════════════════════════════════════ */
 int main(int argc, char *argv[]) {
     const char *csv_path = NULL;
+    int use_gpu = 0;
 
     for (int i = 1; i < argc; i++) {
         if      (!strcmp(argv[i], "-d")) { debug = 1; }
@@ -650,10 +729,13 @@ int main(int argc, char *argv[]) {
         else if (!strcmp(argv[i], "--pivot") && i+1 < argc) { pivot_id = atoi(argv[++i]); }
         else if (!strcmp(argv[i], "--weight-stats") && i+1 < argc) { weight_stats_prefix = argv[++i]; }
         else if (!strcmp(argv[i], "--sample-size") && i+1 < argc) { reservoir_size_per_role = atol(argv[++i]); }
+        else if (!strcmp(argv[i], "--gpu")) { use_gpu = 1; }
+        else if (!strcmp(argv[i], "--cpu")) { use_gpu = 0; }
         else if (argv[i][0] != '-') { csv_path = argv[i]; }
         else { fprintf(stderr, "Unknown option: %s\n", argv[i]); usage(argv[0]); return 1; }
     }
     if (!csv_path) { usage(argv[0]); return 1; }
+    if (!motif_gpu_check_build(use_gpu)) return 1;
 
     int nthreads = omp_get_max_threads();
     printf("Threads: %d\n", nthreads);
@@ -674,7 +756,6 @@ int main(int argc, char *argv[]) {
     build_node_array();
 
     /* 3. Collect INH candidates */
-    typedef struct { node_t *n; int tidx; } cand_t;
     cand_t *candidates = malloc(node_count * sizeof(cand_t));
     int     ncands     = 0;
     int     per_type[12] = {0};
@@ -712,6 +793,29 @@ int main(int argc, char *argv[]) {
     long processed = 0;
     double t0 = omp_get_wtime();
 
+    if (use_gpu) {
+#ifdef MOTIF_USE_GPU
+        uint64_t *counts = calloc(ncands ? (size_t)ncands : 1, sizeof(*counts));
+        if (!counts) fprintf(stderr, "Cannot allocate GPU candidate counts\n");
+        if (!counts || !count_gpu_allen(candidates, ncands, counts)) {
+            free(counts); free(candidates); free_graph();
+            return 1;
+        }
+        for (int c = 0; c < ncands; ++c) {
+            if (counts[c] > (uint64_t)(LONG_MAX - total)) {
+                fprintf(stderr, "GPU error: Motif count exceeds signed 64-bit output range\n");
+                free(counts); free(candidates); free_graph();
+                return 1;
+            }
+            long found = (long)counts[c];
+            type_counts[candidates[c].tidx] += found;
+            total += found;
+            if (debug) printf("  %s neuron %d: %ld motifs (GPU)\n",
+                              candidates[c].n->label, candidates[c].n->id, found);
+        }
+        free(counts);
+#endif
+    } else {
     #pragma omp parallel reduction(+:total)
     {
         #pragma omp for schedule(dynamic, 1)
@@ -741,6 +845,7 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
+    }
     }
 
     double elapsed = omp_get_wtime() - t0;

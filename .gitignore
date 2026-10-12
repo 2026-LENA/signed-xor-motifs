@@ -1,0 +1,12 @@
+# Downloaded and generated connectome datasets (large, reproducible artifacts)
+/data/**/*.csv
+/data/**/*.csv.gz
+/data/**/*.h5
+/data/**/*.xlsx
+
+# Local Python bytecode
+__pycache__/
+*.py[cod]
+
+# Motif counter build products
+/motif_count/build/

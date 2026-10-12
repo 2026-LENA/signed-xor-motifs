@@ -33,12 +33,12 @@
  * DISTINCTNESS:
  *      All 8 neurons must be pairwise distinct.
  *
- * Compile:
- *      gcc -O3 -march=native -fopenmp -o celegans_signed_xor_motif \
- *          celegans_signed_xor_motif.c
+ * Compile (from motif_count/; see README.md for macOS):
+ *      make cpu CC=gcc
  *
  * Usage:
- *      ./celegans_signed_xor_motif input.csv [--out motifs.csv] [--induced] [-q]
+ *      ./build/cpu/celegans_signed_xor_motif input.csv [--out motifs.csv] [--induced] [--gpu|--cpu] [-q]
+ *      GPU builds: make metal (Apple Silicon), make cuda (NVIDIA); see README.md.
  *
  * Output CSV (if --out) has 9 columns:
  *      n1,n2,n3,n4,n5,n6,fp,fm,variants   (variants in {A,B,AB})
@@ -55,6 +55,7 @@
 #include <omp.h>
 #endif
 #include "uthash.h"
+#include "motif_gpu.h"
 
 /* ===================================================================
  *                        STRING -> ID INTERNING
@@ -337,6 +338,8 @@ static void build_expected_edges(int8_t E[8][8],
     }
 }
 
+#include "motif_gpu_variants.h"
+
 /* ===================================================================
  *                              MAIN
  * =================================================================== */
@@ -344,16 +347,21 @@ int main(int argc, char **argv) {
     const char *csv = NULL, *out_csv = NULL;
     int induced_mode = 0;
     int quiet = 0;
+    int use_gpu = 0;
     for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "--out") && i+1 < argc) out_csv = argv[++i];
         else if (!strcmp(argv[i], "--induced")) induced_mode = 1;
         else if (!strcmp(argv[i], "-q")) quiet = 1;
+        else if (!strcmp(argv[i], "--gpu")) use_gpu = 1;
+        else if (!strcmp(argv[i], "--cpu")) use_gpu = 0;
         else if (argv[i][0] != '-') csv = argv[i];
+        else { fprintf(stderr, "Unknown or incomplete option: %s\n", argv[i]); return 1; }
     }
     if (!csv) {
-        fprintf(stderr, "Usage: %s input.tsv [--out motifs.csv] [--induced] [-q]\n", argv[0]);
+        fprintf(stderr, "Usage: %s input.csv [--out motifs.csv] [--induced] [--gpu|--cpu] [-q]\n", argv[0]);
         return 1;
     }
+    if (!motif_gpu_check_build(use_gpu)) return 1;
 
     time_t t0 = time(NULL);
     if (!quiet) fprintf(stderr, "Reading %s ...\n", csv);
@@ -379,12 +387,21 @@ int main(int argc, char **argv) {
     FILE *out_fp = NULL;
     if (out_csv) {
         out_fp = fopen(out_csv, "w");
-        if (out_fp) fprintf(out_fp, "n1,n2,n3,n4,n5,n6,fp,fm,variants\n");
+        if (!out_fp) { perror(out_csv); return 1; }
+        fprintf(out_fp, "n1,n2,n3,n4,n5,n6,fp,fm,variants\n");
     }
 
     long long raw = 0;
     time_t ts = time(NULL);
 
+    if (use_gpu) {
+#ifdef MOTIF_USE_GPU
+        if (!count_gpu_variants(r6, r6_n, induced_mode, out_fp, quiet, &raw)) {
+            if (out_fp) fclose(out_fp);
+            return 1;
+        }
+#endif
+    } else {
     #pragma omp parallel reduction(+:raw)
     {
         long long local = 0;
@@ -503,9 +520,14 @@ int main(int argc, char **argv) {
         }
         raw += local;
     }
+    }
 
     if (!quiet) fprintf(stderr, "Search time: %.0fs\n", difftime(time(NULL), ts));
-    if (out_fp) fclose(out_fp);
+    if (out_fp) {
+        int failed = ferror(out_fp);
+        if (fclose(out_fp)) failed = 1;
+        if (failed) { fprintf(stderr, "Cannot finish writing %s\n", out_csv); return 1; }
+    }
 
     long long distinct = raw;  /* canonicalization (n1 < n3) breaks the
                                   σ automorphism, so each motif is found exactly
