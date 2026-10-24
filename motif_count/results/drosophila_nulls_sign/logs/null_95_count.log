@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_95.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_95.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 10/52009, 120193024 jobs completed
+GPU search: anchor 113/52009, 225869824 jobs completed
+GPU search: anchor 133/52009, 363528192 jobs completed
+GPU search: anchor 133/52009, 522092544 jobs completed
+GPU search: anchor 133/52009, 679706624 jobs completed
+GPU search: anchor 146/52009, 810811392 jobs completed
+GPU search: anchor 439/52009, 895844352 jobs completed
+GPU search: anchor 705/52009, 963411968 jobs completed
+GPU search: anchor 705/52009, 1125908480 jobs completed
+GPU search: anchor 705/52009, 1280638976 jobs completed
+GPU search: anchor 705/52009, 1450672128 jobs completed
+GPU search: anchor 705/52009, 1606090752 jobs completed
+GPU search: anchor 1083/52009, 1688797184 jobs completed
+GPU search: anchor 1833/52009, 1754431488 jobs completed
+GPU search: anchor 2723/52009, 1823637504 jobs completed
+GPU search: anchor 4125/52009, 1875410944 jobs completed
+GPU search: anchor 5247/52009, 1931771904 jobs completed
+GPU search: anchor 7998/52009, 1968275456 jobs completed
+GPU search: anchor 13333/52009, 1983709184 jobs completed
+GPU search: anchor 22110/52009, 1991573504 jobs completed
+Search time: 103s
+Raw mapping count:                    3514855
+Distinct biological motifs:           3514855
+STATS raw=3514855 distinct=3514855 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 3514855  MOTIF_COUNT_DISTINCT 3514855

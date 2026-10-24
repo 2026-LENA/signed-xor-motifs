@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_63.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_63.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 10/52009, 115212288 jobs completed
+GPU search: anchor 111/52009, 236617728 jobs completed
+GPU search: anchor 566/52009, 309919744 jobs completed
+GPU search: anchor 658/52009, 420970496 jobs completed
+GPU search: anchor 658/52009, 564199424 jobs completed
+GPU search: anchor 658/52009, 720633856 jobs completed
+GPU search: anchor 658/52009, 862453760 jobs completed
+GPU search: anchor 1068/52009, 962134016 jobs completed
+GPU search: anchor 1735/52009, 1036189696 jobs completed
+GPU search: anchor 2349/52009, 1108869120 jobs completed
+GPU search: anchor 2406/52009, 1235025920 jobs completed
+GPU search: anchor 2406/52009, 1389690880 jobs completed
+GPU search: anchor 2406/52009, 1545142272 jobs completed
+GPU search: anchor 2406/52009, 1705017344 jobs completed
+GPU search: anchor 2596/52009, 1829437440 jobs completed
+GPU search: anchor 4315/52009, 1868824576 jobs completed
+GPU search: anchor 5507/52009, 1937604608 jobs completed
+GPU search: anchor 7063/52009, 1980661760 jobs completed
+GPU search: anchor 11154/52009, 2007564288 jobs completed
+GPU search: anchor 18937/52009, 2018148352 jobs completed
+Search time: 105s
+Raw mapping count:                    3062476
+Distinct biological motifs:           3062476
+STATS raw=3062476 distinct=3062476 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 3062476  MOTIF_COUNT_DISTINCT 3062476

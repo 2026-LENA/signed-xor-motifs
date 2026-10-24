@@ -1,0 +1,18 @@
+{
+  "counter": {
+    "path": "/home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif",
+    "sha256": "16f08e705f42777c254a2c1737e8697bde072cf86395f59ef62615ca6e144cb2"
+  },
+  "include_other": false,
+  "induced": false,
+  "input": "/home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_connections_sign_normalized.csv",
+  "input_sha256": "2d86d7e09c6f55b29b0da60f7f8ac9c71b2c37f1bcb85cc7ebce2bbe4e9e0db6",
+  "mixing": 100,
+  "mode": "lump-inhibitory",
+  "randomizer": {
+    "path": "/home/kovalenko/signed-xor-motifs/nulls/randomize_drosophila",
+    "sha256": "837c0e03b857c253905edbaffe08648e35d66b5445681ed79ed5cc345743bf3e"
+  },
+  "schema_version": 1,
+  "seed_start": 1
+}

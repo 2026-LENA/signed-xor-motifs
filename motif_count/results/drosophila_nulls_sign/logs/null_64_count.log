@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_64.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_64.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 0s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 9/52009, 136642560 jobs completed
+GPU search: anchor 112/52009, 255950848 jobs completed
+GPU search: anchor 202/52009, 365985792 jobs completed
+GPU search: anchor 202/52009, 529891328 jobs completed
+GPU search: anchor 202/52009, 708804608 jobs completed
+GPU search: anchor 202/52009, 876675072 jobs completed
+GPU search: anchor 294/52009, 999129088 jobs completed
+GPU search: anchor 374/52009, 1094516736 jobs completed
+GPU search: anchor 441/52009, 1231290368 jobs completed
+GPU search: anchor 441/52009, 1376387072 jobs completed
+GPU search: anchor 441/52009, 1526595584 jobs completed
+GPU search: anchor 441/52009, 1673134080 jobs completed
+GPU search: anchor 805/52009, 1743683584 jobs completed
+GPU search: anchor 1287/52009, 1818361856 jobs completed
+GPU search: anchor 1820/52009, 1882947584 jobs completed
+GPU search: anchor 3185/52009, 1931673600 jobs completed
+GPU search: anchor 4438/52009, 1982234624 jobs completed
+GPU search: anchor 7461/52009, 2011987968 jobs completed
+GPU search: anchor 12590/52009, 2030960640 jobs completed
+GPU search: anchor 20402/52009, 2039873536 jobs completed
+Search time: 104s
+Raw mapping count:                    2664453
+Distinct biological motifs:           2664453
+STATS raw=2664453 distinct=2664453 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 2664453  MOTIF_COUNT_DISTINCT 2664453

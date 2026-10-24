@@ -1,0 +1,46 @@
+$ /home/kovalenko/signed-xor-motifs/nulls/randomize_drosophila /home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_connections_normalized.csv --out /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls/work/null_8.csv.partial --seed 8 --mixing 100 --by-nt
+Mode: by-nt (per-NT-type layers, Dale-preserving)
+Reading /home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_connections_normalized.csv ...
+Read 2830178 edges into 3 layer(s) in 1s.
+Building edge hash sets...
+  layer GABA  : 650433 edges (set load 0.31)
+  layer ACH   : 1610737 edges (set load 0.38)
+  layer GLUT  : 492414 edges (set load 0.47)
+Randomizing layer GABA (mixing=100)...
+    GABA: 6504330/65043300 (10%, 0.0M/s)
+    GABA: 13008660/65043300 (20%, 13.0M/s)
+    GABA: 19512990/65043300 (30%, 19.5M/s)
+    GABA: 26017320/65043300 (40%, 13.0M/s)
+    GABA: 32521650/65043300 (50%, 10.8M/s)
+    GABA: 39025980/65043300 (60%, 13.0M/s)
+    GABA: 45530310/65043300 (70%, 11.4M/s)
+    GABA: 52034640/65043300 (80%, 13.0M/s)
+    GABA: 58538970/65043300 (90%, 11.7M/s)
+    GABA: 65043300/65043300 (100%, 13.0M/s)
+  GABA done: 64154717/65043300 accepted (98.63%)
+Randomizing layer ACH (mixing=100)...
+    ACH: 16107370/161073700 (10%, 5.4M/s)
+    ACH: 32214740/161073700 (20%, 6.4M/s)
+    ACH: 48322110/161073700 (30%, 6.0M/s)
+    ACH: 64429480/161073700 (40%, 5.9M/s)
+    ACH: 80536850/161073700 (50%, 6.2M/s)
+    ACH: 96644220/161073700 (60%, 6.0M/s)
+    ACH: 112751590/161073700 (70%, 6.3M/s)
+    ACH: 128858960/161073700 (80%, 6.1M/s)
+    ACH: 144966330/161073700 (90%, 6.3M/s)
+    ACH: 161073700/161073700 (100%, 6.2M/s)
+  ACH done: 159495337/161073700 accepted (99.02%)
+Randomizing layer GLUT (mixing=100)...
+    GLUT: 4924140/49241400 (10%, 4.9M/s)
+    GLUT: 9848280/49241400 (20%, 9.8M/s)
+    GLUT: 14772420/49241400 (30%, 7.4M/s)
+    GLUT: 19696560/49241400 (40%, 6.6M/s)
+    GLUT: 24620700/49241400 (50%, 8.2M/s)
+    GLUT: 29544840/49241400 (60%, 7.4M/s)
+    GLUT: 34468980/49241400 (70%, 6.9M/s)
+    GLUT: 39393120/49241400 (80%, 7.9M/s)
+    GLUT: 44317260/49241400 (90%, 7.4M/s)
+    GLUT: 49241400/49241400 (100%, 7.0M/s)
+  GLUT done: 48989947/49241400 accepted (99.49%)
+Writing /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls/work/null_8.csv.partial ...
+Done.

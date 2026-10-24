@@ -252,12 +252,14 @@ with G++ for the CUDA backend and final linking. Configure these with
 must be supported by your CUDA Toolkit. Set `CUDA_OPENMP=` for a serial
 CPU reference if OpenMP is unavailable.
 
-The default `CUDA_ARCH=sm_75` includes Turing machine code and PTX that the
-driver can compile for newer GPUs. Select a native architecture for the
-machine where you build, or set one explicitly:
+The default `CUDA_ARCH=native` builds machine code for the GPU visible while
+compiling. This avoids a driver-side PTX JIT and is especially useful when the
+CUDA Toolkit is newer than the installed NVIDIA driver. Set the architecture
+explicitly when cross-compiling or when no GPU is visible during the build:
 
 ```bash
-make cuda CUDA_ARCH=native
+# RTX A4000 (compute capability 8.6)
+make cuda CUDA_ARCH=sm_86
 
 # DGX Spark / GB10, using a CUDA Toolkit that supports sm_121
 make cuda CUDA_ARCH=sm_121

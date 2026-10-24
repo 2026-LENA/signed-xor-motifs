@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_37.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_37.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 19/52009, 125534208 jobs completed
+GPU search: anchor 19/52009, 249004032 jobs completed
+GPU search: anchor 19/52009, 407175168 jobs completed
+GPU search: anchor 19/52009, 562692096 jobs completed
+GPU search: anchor 19/52009, 713654272 jobs completed
+GPU search: anchor 115/52009, 825458688 jobs completed
+GPU search: anchor 135/52009, 945356800 jobs completed
+GPU search: anchor 135/52009, 1100840960 jobs completed
+GPU search: anchor 135/52009, 1270579200 jobs completed
+GPU search: anchor 135/52009, 1435336704 jobs completed
+GPU search: anchor 455/52009, 1546289152 jobs completed
+GPU search: anchor 778/52009, 1619591168 jobs completed
+GPU search: anchor 1074/52009, 1709309952 jobs completed
+GPU search: anchor 1492/52009, 1779466240 jobs completed
+GPU search: anchor 2449/52009, 1850867712 jobs completed
+GPU search: anchor 3530/52009, 1910996992 jobs completed
+GPU search: anchor 4766/52009, 1958576128 jobs completed
+GPU search: anchor 7415/52009, 1989476352 jobs completed
+GPU search: anchor 11171/52009, 2024996864 jobs completed
+GPU search: anchor 18112/52009, 2036596736 jobs completed
+Search time: 106s
+Raw mapping count:                    2996279
+Distinct biological motifs:           2996279
+STATS raw=2996279 distinct=2996279 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 2996279  MOTIF_COUNT_DISTINCT 2996279

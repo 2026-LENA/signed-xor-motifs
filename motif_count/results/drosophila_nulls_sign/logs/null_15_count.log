@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_15.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_15.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 11/52009, 117702656 jobs completed
+GPU search: anchor 11/52009, 279281664 jobs completed
+GPU search: anchor 11/52009, 435978240 jobs completed
+GPU search: anchor 11/52009, 595853312 jobs completed
+GPU search: anchor 112/52009, 716275712 jobs completed
+GPU search: anchor 188/52009, 828080128 jobs completed
+GPU search: anchor 497/52009, 901447680 jobs completed
+GPU search: anchor 777/52009, 988774400 jobs completed
+GPU search: anchor 1129/52009, 1070792704 jobs completed
+GPU search: anchor 1129/52009, 1218510848 jobs completed
+GPU search: anchor 1129/52009, 1377370112 jobs completed
+GPU search: anchor 1129/52009, 1536163840 jobs completed
+GPU search: anchor 1140/52009, 1685716992 jobs completed
+GPU search: anchor 1532/52009, 1761902592 jobs completed
+GPU search: anchor 2539/52009, 1819607040 jobs completed
+GPU search: anchor 3608/52009, 1870200832 jobs completed
+GPU search: anchor 5509/52009, 1912602624 jobs completed
+GPU search: anchor 7419/52009, 1950908416 jobs completed
+GPU search: anchor 11750/52009, 1976074240 jobs completed
+GPU search: anchor 19642/52009, 1986691072 jobs completed
+Search time: 105s
+Raw mapping count:                    6084010
+Distinct biological motifs:           6084010
+STATS raw=6084010 distinct=6084010 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 6084010  MOTIF_COUNT_DISTINCT 6084010

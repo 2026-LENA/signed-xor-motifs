@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_7.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_7.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 6/52009, 125173760 jobs completed
+GPU search: anchor 108/52009, 231014400 jobs completed
+GPU search: anchor 426/52009, 339640320 jobs completed
+GPU search: anchor 747/52009, 414482432 jobs completed
+GPU search: anchor 765/52009, 554663936 jobs completed
+GPU search: anchor 765/52009, 688881664 jobs completed
+GPU search: anchor 765/52009, 844955648 jobs completed
+GPU search: anchor 765/52009, 994476032 jobs completed
+GPU search: anchor 898/52009, 1088651264 jobs completed
+GPU search: anchor 1707/52009, 1150582784 jobs completed
+GPU search: anchor 2138/52009, 1235746816 jobs completed
+GPU search: anchor 2311/52009, 1356365824 jobs completed
+GPU search: anchor 2311/52009, 1501659136 jobs completed
+GPU search: anchor 2311/52009, 1647083520 jobs completed
+GPU search: anchor 2311/52009, 1793818624 jobs completed
+GPU search: anchor 3863/52009, 1840906240 jobs completed
+GPU search: anchor 6183/52009, 1874460672 jobs completed
+GPU search: anchor 9413/52009, 1904836608 jobs completed
+GPU search: anchor 15887/52009, 1920663552 jobs completed
+GPU search: anchor 29283/52009, 1926660096 jobs completed
+Search time: 102s
+Raw mapping count:                    2778493
+Distinct biological motifs:           2778493
+STATS raw=2778493 distinct=2778493 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 2778493  MOTIF_COUNT_DISTINCT 2778493

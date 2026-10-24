@@ -1,0 +1,34 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_25.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_25.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 9/52009, 117047296 jobs completed
+GPU search: anchor 111/52009, 209747968 jobs completed
+GPU search: anchor 187/52009, 311132160 jobs completed
+GPU search: anchor 187/52009, 434864128 jobs completed
+GPU search: anchor 187/52009, 585826304 jobs completed
+GPU search: anchor 187/52009, 743735296 jobs completed
+GPU search: anchor 191/52009, 879788032 jobs completed
+GPU search: anchor 491/52009, 955088896 jobs completed
+GPU search: anchor 727/52009, 1065353216 jobs completed
+GPU search: anchor 727/52009, 1204649984 jobs completed
+GPU search: anchor 727/52009, 1353678848 jobs completed
+GPU search: anchor 727/52009, 1515814912 jobs completed
+GPU search: anchor 766/52009, 1653506048 jobs completed
+GPU search: anchor 1226/52009, 1721466880 jobs completed
+GPU search: anchor 1858/52009, 1781694464 jobs completed
+GPU search: anchor 2086/52009, 1870331904 jobs completed
+GPU search: anchor 2884/52009, 1943371776 jobs completed
+GPU search: anchor 4579/52009, 1993506816 jobs completed
+GPU search: anchor 8658/52009, 2018574336 jobs completed
+GPU search: anchor 14441/52009, 2035646464 jobs completed
+GPU search: anchor 24002/52009, 2042822656 jobs completed
+Search time: 108s
+Raw mapping count:                    8072283
+Distinct biological motifs:           8072283
+STATS raw=8072283 distinct=8072283 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 8072283  MOTIF_COUNT_DISTINCT 8072283

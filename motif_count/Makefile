@@ -12,8 +12,10 @@ METAL_CC = /usr/bin/clang
 CUDA_CC ?= gcc
 CUDA_CXX ?= g++
 NVCC ?= nvcc
-# Turing machine code + forward-compatible PTX. Override for the target GPU.
-CUDA_ARCH ?= sm_75
+# Build native machine code for the visible GPU by default. This avoids relying
+# on driver-side PTX JIT compatibility when nvcc is newer than the GPU driver.
+# Override with (for example) CUDA_ARCH=sm_86 when cross-compiling.
+CUDA_ARCH ?= native
 NVCCFLAGS ?= -O3 -std=c++14
 CFLAGS ?= -O3 -Wall -Wextra
 OPENMP ?= -fopenmp
@@ -63,7 +65,7 @@ build/cuda/motif_gpu.o: src/gpu/motif_gpu.c include/motif_gpu.h | cuda-toolchain
 	@mkdir -p $(@D)
 	$(CUDA_CC) $(CPPFLAGS) $(INCLUDES) $(CFLAGS) $(CUDA_OPENMP) -DMOTIF_USE_CUDA -c $< -o $@
 
-build/cuda/motif_gpu_cuda.o: src/gpu/motif_gpu_cuda.cu include/motif_gpu.h src/gpu/motif_gpu_search.h | cuda-toolchain
+build/cuda/motif_gpu_cuda.o: src/gpu/motif_gpu_cuda.cu include/motif_gpu.h src/gpu/motif_gpu_search.h Makefile | cuda-toolchain
 	@mkdir -p $(@D)
 	$(NVCC) $(CPPFLAGS) $(INCLUDES) $(NVCCFLAGS) -arch=$(CUDA_ARCH) -ccbin "$(CUDA_CXX)" -DMOTIF_USE_CUDA -c $< -o $@
 

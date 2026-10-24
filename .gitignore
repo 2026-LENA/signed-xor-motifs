@@ -8,5 +8,13 @@
 __pycache__/
 *.py[cod]
 
+# Local OS metadata
+.DS_Store
+
 # Motif counter build products
 /motif_count/build/
+
+# Null-model build products and transient randomized graphs
+/nulls/randomize_celegans
+/nulls/randomize_drosophila
+/motif_count/results/drosophila_nulls*/work/

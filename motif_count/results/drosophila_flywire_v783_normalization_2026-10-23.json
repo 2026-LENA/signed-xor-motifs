@@ -1,0 +1,19 @@
+{
+  "collapse_key": "nt",
+  "collapsed_duplicate_rows": 1039700,
+  "directed_pairs_with_multiple_output_types": 122966,
+  "elapsed_seconds": 19.608507241122425,
+  "input": "/home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_connections.csv",
+  "input_sha256": "dbe2552790e30e97746c8aa990aa4dfebc33cafb4748885cc2ee13e2319f587a",
+  "maximum_rows_collapsed_into_one_edge": 16,
+  "neuropil_policy": "AGGREGATED",
+  "operation": "collapse_by_pre_post_nt_type",
+  "original_rows": 3869878,
+  "output": "/home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_connections_normalized.csv",
+  "output_sha256": "ae734d2c7986a49a690a781b970322da5fe0ce6599e9d7c16d0e10e225ad1a0e",
+  "output_type_policy": "nt_type",
+  "schema_version": 2,
+  "total_syn_count": 34153566,
+  "unique_directed_pairs": 2700513,
+  "unique_edges": 2830178
+}

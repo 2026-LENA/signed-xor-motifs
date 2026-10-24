@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_100.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_100.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 8/52009, 110657536 jobs completed
+GPU search: anchor 110/52009, 227770368 jobs completed
+GPU search: anchor 263/52009, 329285632 jobs completed
+GPU search: anchor 473/52009, 406159360 jobs completed
+GPU search: anchor 473/52009, 547323904 jobs completed
+GPU search: anchor 473/52009, 704282624 jobs completed
+GPU search: anchor 473/52009, 861700096 jobs completed
+GPU search: anchor 473/52009, 1011023872 jobs completed
+GPU search: anchor 685/52009, 1126236160 jobs completed
+GPU search: anchor 1044/52009, 1220083712 jobs completed
+GPU search: anchor 1044/52009, 1364983808 jobs completed
+GPU search: anchor 1044/52009, 1511784448 jobs completed
+GPU search: anchor 1044/52009, 1645445120 jobs completed
+GPU search: anchor 1701/52009, 1721827328 jobs completed
+GPU search: anchor 2467/52009, 1781432320 jobs completed
+GPU search: anchor 3262/52009, 1837858816 jobs completed
+GPU search: anchor 5628/52009, 1878786048 jobs completed
+GPU search: anchor 7843/52009, 1915453440 jobs completed
+GPU search: anchor 13958/52009, 1931411456 jobs completed
+GPU search: anchor 24788/52009, 1938980864 jobs completed
+Search time: 102s
+Raw mapping count:                    2796390
+Distinct biological motifs:           2796390
+STATS raw=2796390 distinct=2796390 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 2796390  MOTIF_COUNT_DISTINCT 2796390

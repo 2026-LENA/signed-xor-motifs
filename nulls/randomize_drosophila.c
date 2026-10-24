@@ -15,16 +15,18 @@
  *
  *   --by-nt   (default, biologically correct)
  *       Each distinct nt_type is its own layer. ACH edges only swap with
- *       ACH edges, GABA with GABA, etc. Preserves Dale's principle: every
- *       neuron retains its identity as ACH/GABA/GLUT/... source.
- *       Layers tracked: any nt_type that appears in the file.
+ *       ACH edges, GABA with GABA, etc. This preserves both incoming and
+ *       outgoing degree separately for every neurotransmitter type.
+ *       Layers tracked: canonical types by default, or every type when
+ *       --include-other is used.
  *
  *   --lump-inhibitory  (mouse-equivalent)
  *       Two layers: EXC (= ACH) and INH (= GABA + GLUT lumped together).
- *       Same null space as randomize_directed_signed.c on the mouse data.
- *       Note: this allows a GABAergic neuron to "become" glutamatergic in
- *       the null, which is biologically problematic for Drosophila but
- *       sometimes desired for cross-species methodological consistency.
+ *       This preserves signed in/out degree. Because swaps exchange only
+ *       targets, each source edge retains its original nt_type; incoming
+ *       GABA-versus-GLUT degree at a target is not preserved separately.
+ *       Use this mode with sign-collapsed input for a simple signed-graph
+ *       null model.
  *
  *   --include-other
  *       By default, edges with nt_type not in {ACH, GABA, GLUT} are kept
@@ -368,7 +370,12 @@ static void read_csv(const char *path){
         el_push(&L->E, sid, tid);
         all_push(sid, tid, L, idx, nt, c2, c3);
     }
-    fclose(fp);
+    if(ferror(fp)){
+        fprintf(stderr, "Failed while reading %s\n", path);
+        fclose(fp);
+        exit(1);
+    }
+    if(fclose(fp)!=0){perror(path);exit(1);}
 }
 
 static void build_edgesets(void){
@@ -447,7 +454,13 @@ static void write_csv(const char *path){
                 id_to_name[s], id_to_name[d],
                 e->col2, e->col3, e->nt);
     }
-    fclose(fp);
+    int failed = ferror(fp);
+    if(fclose(fp)!=0) failed = 1;
+    if(failed){
+        fprintf(stderr, "Failed while writing %s\n", path);
+        remove(path);
+        exit(1);
+    }
 }
 
 /* ---------- main ---------- */
