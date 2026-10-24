@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_13.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_13.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 27/52009, 120389632 jobs completed
+GPU search: anchor 114/52009, 238583808 jobs completed
+GPU search: anchor 428/52009, 329875456 jobs completed
+GPU search: anchor 662/52009, 418775040 jobs completed
+GPU search: anchor 662/52009, 586252288 jobs completed
+GPU search: anchor 662/52009, 752418816 jobs completed
+GPU search: anchor 662/52009, 920879104 jobs completed
+GPU search: anchor 662/52009, 1073807360 jobs completed
+GPU search: anchor 864/52009, 1171324928 jobs completed
+GPU search: anchor 864/52009, 1326284800 jobs completed
+GPU search: anchor 864/52009, 1486389248 jobs completed
+GPU search: anchor 864/52009, 1638465536 jobs completed
+GPU search: anchor 1217/52009, 1728348160 jobs completed
+GPU search: anchor 1916/52009, 1799421952 jobs completed
+GPU search: anchor 2488/52009, 1863090176 jobs completed
+GPU search: anchor 3637/52009, 1918042112 jobs completed
+GPU search: anchor 5453/52009, 1969258496 jobs completed
+GPU search: anchor 9096/52009, 1994129408 jobs completed
+GPU search: anchor 16019/52009, 2009104384 jobs completed
+GPU search: anchor 27985/52009, 2014707712 jobs completed
+Search time: 102s
+Raw mapping count:                    1404098
+Distinct biological motifs:           1404098
+STATS raw=1404098 distinct=1404098 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 1404098  MOTIF_COUNT_DISTINCT 1404098

@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_19.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_19.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 26/52009, 124354560 jobs completed
+GPU search: anchor 109/52009, 247595008 jobs completed
+GPU search: anchor 324/52009, 330170368 jobs completed
+GPU search: anchor 324/52009, 484900864 jobs completed
+GPU search: anchor 324/52009, 640450560 jobs completed
+GPU search: anchor 324/52009, 806584320 jobs completed
+GPU search: anchor 523/52009, 933068800 jobs completed
+GPU search: anchor 566/52009, 1044578304 jobs completed
+GPU search: anchor 566/52009, 1216675840 jobs completed
+GPU search: anchor 566/52009, 1379303424 jobs completed
+GPU search: anchor 566/52009, 1539309568 jobs completed
+GPU search: anchor 567/52009, 1677099008 jobs completed
+GPU search: anchor 962/52009, 1742766080 jobs completed
+GPU search: anchor 1511/52009, 1806925824 jobs completed
+GPU search: anchor 1999/52009, 1882226688 jobs completed
+GPU search: anchor 3320/52009, 1926397952 jobs completed
+GPU search: anchor 5101/52009, 1978990592 jobs completed
+GPU search: anchor 7408/52009, 2010546176 jobs completed
+GPU search: anchor 11830/52009, 2035384320 jobs completed
+GPU search: anchor 19933/52009, 2044428288 jobs completed
+Search time: 105s
+Raw mapping count:                    2462022
+Distinct biological motifs:           2462022
+STATS raw=2462022 distinct=2462022 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 2462022  MOTIF_COUNT_DISTINCT 2462022

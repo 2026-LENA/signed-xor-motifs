@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_4.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_4.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 10/52009, 124223488 jobs completed
+GPU search: anchor 115/52009, 244056064 jobs completed
+GPU search: anchor 440/52009, 322109440 jobs completed
+GPU search: anchor 461/52009, 471760896 jobs completed
+GPU search: anchor 461/52009, 638287872 jobs completed
+GPU search: anchor 461/52009, 797114368 jobs completed
+GPU search: anchor 652/52009, 916881408 jobs completed
+GPU search: anchor 877/52009, 1007353856 jobs completed
+GPU search: anchor 1316/52009, 1080754176 jobs completed
+GPU search: anchor 1870/52009, 1180336128 jobs completed
+GPU search: anchor 1870/52009, 1317896192 jobs completed
+GPU search: anchor 1870/52009, 1474887680 jobs completed
+GPU search: anchor 1870/52009, 1632468992 jobs completed
+GPU search: anchor 1955/52009, 1770717184 jobs completed
+GPU search: anchor 2625/52009, 1829109760 jobs completed
+GPU search: anchor 3527/52009, 1885175808 jobs completed
+GPU search: anchor 4929/52009, 1941471232 jobs completed
+GPU search: anchor 7869/52009, 1973780480 jobs completed
+GPU search: anchor 11755/52009, 1996849152 jobs completed
+GPU search: anchor 19850/52009, 2006646784 jobs completed
+Search time: 104s
+Raw mapping count:                    3285423
+Distinct biological motifs:           3285423
+STATS raw=3285423 distinct=3285423 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 3285423  MOTIF_COUNT_DISTINCT 3285423

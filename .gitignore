@@ -1,0 +1,20 @@
+# Downloaded and generated connectome datasets (large, reproducible artifacts)
+/data/**/*.csv
+/data/**/*.csv.gz
+/data/**/*.h5
+/data/**/*.xlsx
+
+# Local Python bytecode
+__pycache__/
+*.py[cod]
+
+# Local OS metadata
+.DS_Store
+
+# Motif counter build products
+/motif_count/build/
+
+# Null-model build products and transient randomized graphs
+/nulls/randomize_celegans
+/nulls/randomize_drosophila
+/motif_count/results/drosophila_nulls*/work/

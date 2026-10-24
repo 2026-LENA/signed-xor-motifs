@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_70.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_70.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 6/52009, 104693760 jobs completed
+GPU search: anchor 59/52009, 218333184 jobs completed
+GPU search: anchor 145/52009, 324501504 jobs completed
+GPU search: anchor 436/52009, 405536768 jobs completed
+GPU search: anchor 436/52009, 536084480 jobs completed
+GPU search: anchor 436/52009, 695599104 jobs completed
+GPU search: anchor 436/52009, 853835776 jobs completed
+GPU search: anchor 851/52009, 946044928 jobs completed
+GPU search: anchor 931/52009, 1054081024 jobs completed
+GPU search: anchor 931/52009, 1212973056 jobs completed
+GPU search: anchor 931/52009, 1372094464 jobs completed
+GPU search: anchor 931/52009, 1529446400 jobs completed
+GPU search: anchor 1040/52009, 1657077760 jobs completed
+GPU search: anchor 1426/52009, 1738014720 jobs completed
+GPU search: anchor 2327/52009, 1795915776 jobs completed
+GPU search: anchor 2902/52009, 1872691200 jobs completed
+GPU search: anchor 4403/52009, 1921089536 jobs completed
+GPU search: anchor 6568/52009, 1960280064 jobs completed
+GPU search: anchor 10599/52009, 1981972480 jobs completed
+GPU search: anchor 18014/52009, 1993179136 jobs completed
+Search time: 105s
+Raw mapping count:                    6238288
+Distinct biological motifs:           6238288
+STATS raw=6238288 distinct=6238288 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 6238288  MOTIF_COUNT_DISTINCT 6238288

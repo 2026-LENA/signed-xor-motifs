@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_61.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_61.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 22/52009, 129368064 jobs completed
+GPU search: anchor 106/52009, 222461952 jobs completed
+GPU search: anchor 183/52009, 339968000 jobs completed
+GPU search: anchor 183/52009, 470712320 jobs completed
+GPU search: anchor 183/52009, 631570432 jobs completed
+GPU search: anchor 183/52009, 799440896 jobs completed
+GPU search: anchor 309/52009, 912752640 jobs completed
+GPU search: anchor 309/52009, 1070727168 jobs completed
+GPU search: anchor 309/52009, 1224704000 jobs completed
+GPU search: anchor 309/52009, 1392476160 jobs completed
+GPU search: anchor 319/52009, 1543471104 jobs completed
+GPU search: anchor 629/52009, 1613463552 jobs completed
+GPU search: anchor 1262/52009, 1673854976 jobs completed
+GPU search: anchor 1790/52009, 1754333184 jobs completed
+GPU search: anchor 2210/52009, 1832747008 jobs completed
+GPU search: anchor 3178/52009, 1905524736 jobs completed
+GPU search: anchor 5114/52009, 1939243008 jobs completed
+GPU search: anchor 8365/52009, 1965588480 jobs completed
+GPU search: anchor 13863/52009, 1988001792 jobs completed
+GPU search: anchor 23488/52009, 1995898880 jobs completed
+Search time: 103s
+Raw mapping count:                    4837358
+Distinct biological motifs:           4837358
+STATS raw=4837358 distinct=4837358 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 4837358  MOTIF_COUNT_DISTINCT 4837358

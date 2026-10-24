@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_26.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_26.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 23/52009, 127696896 jobs completed
+GPU search: anchor 102/52009, 256868352 jobs completed
+GPU search: anchor 327/52009, 337477632 jobs completed
+GPU search: anchor 479/52009, 455606272 jobs completed
+GPU search: anchor 479/52009, 606076928 jobs completed
+GPU search: anchor 479/52009, 766312448 jobs completed
+GPU search: anchor 496/52009, 914522112 jobs completed
+GPU search: anchor 521/52009, 1057849344 jobs completed
+GPU search: anchor 521/52009, 1197637632 jobs completed
+GPU search: anchor 521/52009, 1355186176 jobs completed
+GPU search: anchor 521/52009, 1493270528 jobs completed
+GPU search: anchor 719/52009, 1593671680 jobs completed
+GPU search: anchor 1081/52009, 1673854976 jobs completed
+GPU search: anchor 1739/52009, 1731067904 jobs completed
+GPU search: anchor 2361/52009, 1818001408 jobs completed
+GPU search: anchor 3671/52009, 1859158016 jobs completed
+GPU search: anchor 5129/52009, 1912209408 jobs completed
+GPU search: anchor 8228/52009, 1946517504 jobs completed
+GPU search: anchor 14975/52009, 1961623552 jobs completed
+GPU search: anchor 25527/52009, 1969520640 jobs completed
+Search time: 103s
+Raw mapping count:                    2994129
+Distinct biological motifs:           2994129
+STATS raw=2994129 distinct=2994129 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 2994129  MOTIF_COUNT_DISTINCT 2994129

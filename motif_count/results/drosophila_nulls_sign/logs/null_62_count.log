@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_62.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_62.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 7/52009, 122224640 jobs completed
+GPU search: anchor 110/52009, 237666304 jobs completed
+GPU search: anchor 135/52009, 352223232 jobs completed
+GPU search: anchor 386/52009, 448299008 jobs completed
+GPU search: anchor 386/52009, 601653248 jobs completed
+GPU search: anchor 386/52009, 754057216 jobs completed
+GPU search: anchor 386/52009, 922058752 jobs completed
+GPU search: anchor 386/52009, 1068400640 jobs completed
+GPU search: anchor 455/52009, 1183350784 jobs completed
+GPU search: anchor 455/52009, 1334575104 jobs completed
+GPU search: anchor 455/52009, 1498284032 jobs completed
+GPU search: anchor 455/52009, 1644953600 jobs completed
+GPU search: anchor 721/52009, 1738833920 jobs completed
+GPU search: anchor 1147/52009, 1812365312 jobs completed
+GPU search: anchor 1572/52009, 1894612992 jobs completed
+GPU search: anchor 2710/52009, 1940979712 jobs completed
+GPU search: anchor 3847/52009, 1994489856 jobs completed
+GPU search: anchor 6314/52009, 2026536960 jobs completed
+GPU search: anchor 10149/52009, 2051244032 jobs completed
+GPU search: anchor 17779/52009, 2063400960 jobs completed
+Search time: 105s
+Raw mapping count:                    2445779
+Distinct biological motifs:           2445779
+STATS raw=2445779 distinct=2445779 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 2445779  MOTIF_COUNT_DISTINCT 2445779

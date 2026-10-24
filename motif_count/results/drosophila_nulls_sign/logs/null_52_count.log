@@ -1,0 +1,34 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_52.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign/work/null_52.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 7/52009, 119111680 jobs completed
+GPU search: anchor 108/52009, 228229120 jobs completed
+GPU search: anchor 262/52009, 334331904 jobs completed
+GPU search: anchor 262/52009, 480215040 jobs completed
+GPU search: anchor 262/52009, 628490240 jobs completed
+GPU search: anchor 262/52009, 773062656 jobs completed
+GPU search: anchor 262/52009, 925532160 jobs completed
+GPU search: anchor 428/52009, 1026162688 jobs completed
+GPU search: anchor 828/52009, 1089536000 jobs completed
+GPU search: anchor 1382/52009, 1160544256 jobs completed
+GPU search: anchor 1861/52009, 1238663168 jobs completed
+GPU search: anchor 2128/52009, 1336049664 jobs completed
+GPU search: anchor 2128/52009, 1484783616 jobs completed
+GPU search: anchor 2128/52009, 1645150208 jobs completed
+GPU search: anchor 2128/52009, 1793982464 jobs completed
+GPU search: anchor 2879/52009, 1879244800 jobs completed
+GPU search: anchor 3558/52009, 1964277760 jobs completed
+GPU search: anchor 5048/52009, 2011037696 jobs completed
+GPU search: anchor 8443/52009, 2039742464 jobs completed
+GPU search: anchor 13768/52009, 2055733248 jobs completed
+GPU search: anchor 23680/52009, 2064547840 jobs completed
+Search time: 108s
+Raw mapping count:                    3293777
+Distinct biological motifs:           3293777
+STATS raw=3293777 distinct=3293777 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 3293777  MOTIF_COUNT_DISTINCT 3293777
