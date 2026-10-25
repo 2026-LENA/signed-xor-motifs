@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing200/work/null_19.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing200/work/null_19.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 8/52009, 120913920 jobs completed
+GPU search: anchor 110/52009, 241958912 jobs completed
+GPU search: anchor 213/52009, 350879744 jobs completed
+GPU search: anchor 213/52009, 506134528 jobs completed
+GPU search: anchor 213/52009, 660471808 jobs completed
+GPU search: anchor 213/52009, 812711936 jobs completed
+GPU search: anchor 344/52009, 909344768 jobs completed
+GPU search: anchor 502/52009, 993198080 jobs completed
+GPU search: anchor 522/52009, 1113948160 jobs completed
+GPU search: anchor 522/52009, 1264287744 jobs completed
+GPU search: anchor 522/52009, 1408892928 jobs completed
+GPU search: anchor 522/52009, 1558642688 jobs completed
+GPU search: anchor 731/52009, 1664352256 jobs completed
+GPU search: anchor 1104/52009, 1744633856 jobs completed
+GPU search: anchor 1872/52009, 1806139392 jobs completed
+GPU search: anchor 3048/52009, 1860206592 jobs completed
+GPU search: anchor 5211/52009, 1897824256 jobs completed
+GPU search: anchor 7740/52009, 1930526720 jobs completed
+GPU search: anchor 11287/52009, 1954873344 jobs completed
+GPU search: anchor 18550/52009, 1964638208 jobs completed
+Search time: 104s
+Raw mapping count:                    3650699
+Distinct biological motifs:           3650699
+STATS raw=3650699 distinct=3650699 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 3650699  MOTIF_COUNT_DISTINCT 3650699

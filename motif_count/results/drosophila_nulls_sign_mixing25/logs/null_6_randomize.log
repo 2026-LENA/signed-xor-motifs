@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/nulls/randomize_drosophila /home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_connections_sign_normalized.csv --out /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing25/work/null_6.csv.partial --seed 6 --mixing 25 --lump-inhibitory
+Mode: lump-inhibitory (mouse-equivalent EXC/INH layers)
+Reading /home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_connections_sign_normalized.csv ...
+Read 2782075 edges into 2 layer(s) in 0s.
+Building edge hash sets...
+  layer INH   : 1097314 edges (set load 0.26)
+  layer EXC   : 1610737 edges (set load 0.38)
+Randomizing layer INH (mixing=25)...
+    INH: 2743285/27432850 (10%, 0.0M/s)
+    INH: 5486570/27432850 (20%, 0.0M/s)
+    INH: 8229855/27432850 (30%, 8.2M/s)
+    INH: 10973140/27432850 (40%, 11.0M/s)
+    INH: 13716425/27432850 (50%, 13.7M/s)
+    INH: 16459710/27432850 (60%, 8.2M/s)
+    INH: 19202995/27432850 (70%, 9.6M/s)
+    INH: 21946280/27432850 (80%, 11.0M/s)
+    INH: 24689565/27432850 (90%, 8.2M/s)
+    INH: 27432850/27432850 (100%, 9.1M/s)
+  INH done: 27142913/27432850 accepted (98.94%)
+Randomizing layer EXC (mixing=25)...
+    EXC: 4026842/40268425 (10%, 4.0M/s)
+    EXC: 8053684/40268425 (20%, 8.1M/s)
+    EXC: 12080526/40268425 (30%, 6.0M/s)
+    EXC: 16107368/40268425 (40%, 5.4M/s)
+    EXC: 20134210/40268425 (50%, 6.7M/s)
+    EXC: 24161052/40268425 (60%, 6.0M/s)
+    EXC: 28187894/40268425 (70%, 5.6M/s)
+    EXC: 32214736/40268425 (80%, 5.4M/s)
+    EXC: 36241578/40268425 (90%, 6.0M/s)
+    EXC: 40268420/40268425 (100%, 5.8M/s)
+  EXC done: 39875547/40268425 accepted (99.02%)
+Writing /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing25/work/null_6.csv.partial ...
+Done.

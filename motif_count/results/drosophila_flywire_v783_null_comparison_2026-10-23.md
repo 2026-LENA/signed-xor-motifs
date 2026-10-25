@@ -82,6 +82,7 @@ Detailed artifacts:
 - [Typed null summary](drosophila_nulls/summary.md)
 - [Signed normalization report](drosophila_flywire_v783_sign_normalization_2026-10-23.json)
 - [Signed null summary](drosophila_nulls_sign/summary.md)
+- [Mixing-convergence check](drosophila_flywire_v783_mixing_convergence_2026-10-25.md)
 
 ## Statistical interpretation
 
@@ -111,6 +112,13 @@ samples. The signed distribution has a visible upper tail: four seeds exceeded
 10 million motifs, and seed 17 produced the maximum of 22,477,248. That maximum
 is 4.44 times the null mean but still 202.3 times below observed.
 
+A same-seed sensitivity check at 25, 50, 100, and 200 attempted swaps per edge
+found no monotonic drift with mixing depth. Fold enrichment remained between
+875.84 and 1,130.50, while cross-depth Pearson correlations ranged from -0.281
+to 0.153. This supports the qualitative conclusion at mixing 100, although it
+does not prove formal Markov-chain convergence or precisely determine the null
+mean.
+
 ## Limits and next step
 
 - The result is structural; it does not show that matched circuits compute XOR
@@ -123,8 +131,7 @@ is 4.44 times the null mean but still 202.3 times below observed.
 - The signed empirical p-value is at the 100-null resolution floor; more nulls
   are needed to estimate a smaller tail probability precisely.
 
-The planned 100-signed-null milestone is complete. Before a final claim,
-inspect mixing convergence and test a more structured null that also preserves
-biological organization such as cell class, neuropil, spatial locality, or
-community. Use 999 signed nulls if resolving an empirical p-value of 0.001 is
-required.
+The planned 100-signed-null and mixing-depth milestones are complete. The next
+scientific priority is a more structured null that also preserves biological
+organization such as cell class, neuropil, spatial locality, or community. Use
+999 signed nulls if resolving an empirical p-value of 0.001 is required.

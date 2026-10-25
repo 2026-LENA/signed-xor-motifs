@@ -1,0 +1,113 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing25/work/null_8.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing25/work/null_8.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 7/52009, 19464192 jobs completed
+GPU search: anchor 7/52009, 46661632 jobs completed
+GPU search: anchor 7/52009, 67272704 jobs completed
+GPU search: anchor 7/52009, 88670208 jobs completed
+GPU search: anchor 7/52009, 110624768 jobs completed
+GPU search: anchor 7/52009, 131235840 jobs completed
+GPU search: anchor 107/52009, 148733952 jobs completed
+GPU search: anchor 107/52009, 171966464 jobs completed
+GPU search: anchor 107/52009, 195854336 jobs completed
+GPU search: anchor 107/52009, 219611136 jobs completed
+GPU search: anchor 107/52009, 239763456 jobs completed
+GPU search: anchor 107/52009, 261652480 jobs completed
+GPU search: anchor 107/52009, 284262400 jobs completed
+GPU search: anchor 131/52009, 310345728 jobs completed
+GPU search: anchor 131/52009, 333185024 jobs completed
+GPU search: anchor 131/52009, 356876288 jobs completed
+GPU search: anchor 131/52009, 382074880 jobs completed
+GPU search: anchor 131/52009, 403111936 jobs completed
+GPU search: anchor 131/52009, 426344448 jobs completed
+GPU search: anchor 131/52009, 456392704 jobs completed
+GPU search: anchor 131/52009, 480378880 jobs completed
+GPU search: anchor 131/52009, 504135680 jobs completed
+GPU search: anchor 131/52009, 524877824 jobs completed
+GPU search: anchor 131/52009, 546406400 jobs completed
+GPU search: anchor 131/52009, 570687488 jobs completed
+GPU search: anchor 131/52009, 600473600 jobs completed
+GPU search: anchor 131/52009, 622166016 jobs completed
+GPU search: anchor 131/52009, 644874240 jobs completed
+GPU search: anchor 131/52009, 668008448 jobs completed
+GPU search: anchor 131/52009, 690225152 jobs completed
+GPU search: anchor 131/52009, 712966144 jobs completed
+GPU search: anchor 131/52009, 740753408 jobs completed
+GPU search: anchor 131/52009, 763789312 jobs completed
+GPU search: anchor 131/52009, 786235392 jobs completed
+GPU search: anchor 131/52009, 810418176 jobs completed
+GPU search: anchor 131/52009, 833290240 jobs completed
+GPU search: anchor 131/52009, 856162304 jobs completed
+GPU search: anchor 131/52009, 884015104 jobs completed
+GPU search: anchor 131/52009, 906100736 jobs completed
+GPU search: anchor 131/52009, 928317440 jobs completed
+GPU search: anchor 131/52009, 968654848 jobs completed
+GPU search: anchor 145/52009, 1025245184 jobs completed
+GPU search: anchor 201/52009, 1056964608 jobs completed
+GPU search: anchor 201/52009, 1078558720 jobs completed
+GPU search: anchor 311/52009, 1097007104 jobs completed
+GPU search: anchor 458/52009, 1115652096 jobs completed
+GPU search: anchor 460/52009, 1133477888 jobs completed
+GPU search: anchor 525/52009, 1150287872 jobs completed
+GPU search: anchor 557/52009, 1169031168 jobs completed
+GPU search: anchor 604/52009, 1189675008 jobs completed
+GPU search: anchor 604/52009, 1209729024 jobs completed
+GPU search: anchor 604/52009, 1228636160 jobs completed
+GPU search: anchor 604/52009, 1248854016 jobs completed
+GPU search: anchor 604/52009, 1268875264 jobs completed
+GPU search: anchor 604/52009, 1288699904 jobs completed
+GPU search: anchor 604/52009, 1314750464 jobs completed
+GPU search: anchor 604/52009, 1335525376 jobs completed
+GPU search: anchor 604/52009, 1356005376 jobs completed
+GPU search: anchor 604/52009, 1372323840 jobs completed
+GPU search: anchor 604/52009, 1390018560 jobs completed
+GPU search: anchor 604/52009, 1414070272 jobs completed
+GPU search: anchor 604/52009, 1440055296 jobs completed
+GPU search: anchor 604/52009, 1459355648 jobs completed
+GPU search: anchor 604/52009, 1476820992 jobs completed
+GPU search: anchor 604/52009, 1493991424 jobs completed
+GPU search: anchor 604/52009, 1514078208 jobs completed
+GPU search: anchor 604/52009, 1532624896 jobs completed
+GPU search: anchor 604/52009, 1557463040 jobs completed
+GPU search: anchor 604/52009, 1577222144 jobs completed
+GPU search: anchor 604/52009, 1597374464 jobs completed
+GPU search: anchor 604/52009, 1616936960 jobs completed
+GPU search: anchor 604/52009, 1635614720 jobs completed
+GPU search: anchor 604/52009, 1653342208 jobs completed
+GPU search: anchor 604/52009, 1676345344 jobs completed
+GPU search: anchor 604/52009, 1695252480 jobs completed
+GPU search: anchor 604/52009, 1714257920 jobs completed
+GPU search: anchor 604/52009, 1733263360 jobs completed
+GPU search: anchor 604/52009, 1752203264 jobs completed
+GPU search: anchor 743/52009, 1771831296 jobs completed
+GPU search: anchor 967/52009, 1792344064 jobs completed
+GPU search: anchor 1102/52009, 1810694144 jobs completed
+GPU search: anchor 1182/52009, 1829011456 jobs completed
+GPU search: anchor 1470/52009, 1845264384 jobs completed
+GPU search: anchor 1736/52009, 1860927488 jobs completed
+GPU search: anchor 1810/52009, 1877049344 jobs completed
+GPU search: anchor 1810/52009, 1898479616 jobs completed
+GPU search: anchor 1861/52009, 1915944960 jobs completed
+GPU search: anchor 2272/52009, 1933508608 jobs completed
+GPU search: anchor 2629/52009, 1950318592 jobs completed
+GPU search: anchor 3121/52009, 1966899200 jobs completed
+GPU search: anchor 3300/52009, 1985904640 jobs completed
+GPU search: anchor 3487/52009, 2004746240 jobs completed
+GPU search: anchor 3970/52009, 2020868096 jobs completed
+GPU search: anchor 4502/52009, 2037317632 jobs completed
+GPU search: anchor 6165/52009, 2050293760 jobs completed
+GPU search: anchor 6957/52009, 2065793024 jobs completed
+GPU search: anchor 9262/52009, 2079621120 jobs completed
+GPU search: anchor 11627/52009, 2096693248 jobs completed
+GPU search: anchor 17859/52009, 2104524800 jobs completed
+GPU search: anchor 37018/52009, 2109046784 jobs completed
+Search time: 502s
+Raw mapping count:                    6055765
+Distinct biological motifs:           6055765
+STATS raw=6055765 distinct=6055765 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 6055765  MOTIF_COUNT_DISTINCT 6055765

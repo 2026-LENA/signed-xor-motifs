@@ -1,0 +1,14 @@
+{
+  "fold_enrichment": 1130.496139532651,
+  "minimum_attainable_empirical_p": 0.047619047619047616,
+  "n_nulls": 20,
+  "null_max": 7920945,
+  "null_mean": 4022479.3,
+  "null_min": 1673846,
+  "null_sample_sd": 1463935.888769799,
+  "observed": 4547397320,
+  "p_depletion": 1.0,
+  "p_enrichment": 0.047619047619047616,
+  "p_two_sided": 0.09523809523809523,
+  "z_score": 3103.53402464774
+}

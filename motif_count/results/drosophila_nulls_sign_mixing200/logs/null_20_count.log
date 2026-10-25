@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing200/work/null_20.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing200/work/null_20.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 11/52009, 125239296 jobs completed
+GPU search: anchor 39/52009, 254803968 jobs completed
+GPU search: anchor 39/52009, 403603456 jobs completed
+GPU search: anchor 39/52009, 555122688 jobs completed
+GPU search: anchor 39/52009, 701169664 jobs completed
+GPU search: anchor 109/52009, 827228160 jobs completed
+GPU search: anchor 230/52009, 936411136 jobs completed
+GPU search: anchor 404/52009, 1045299200 jobs completed
+GPU search: anchor 404/52009, 1195474944 jobs completed
+GPU search: anchor 404/52009, 1338572800 jobs completed
+GPU search: anchor 404/52009, 1491468288 jobs completed
+GPU search: anchor 626/52009, 1608712192 jobs completed
+GPU search: anchor 924/52009, 1689190400 jobs completed
+GPU search: anchor 1930/52009, 1750073344 jobs completed
+GPU search: anchor 2518/52009, 1813118976 jobs completed
+GPU search: anchor 3498/52009, 1879343104 jobs completed
+GPU search: anchor 4809/52009, 1936457728 jobs completed
+GPU search: anchor 6995/52009, 1979187200 jobs completed
+GPU search: anchor 11775/52009, 1999142912 jobs completed
+GPU search: anchor 19231/52009, 2009497600 jobs completed
+Search time: 104s
+Raw mapping count:                    2269844
+Distinct biological motifs:           2269844
+STATS raw=2269844 distinct=2269844 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 2269844  MOTIF_COUNT_DISTINCT 2269844

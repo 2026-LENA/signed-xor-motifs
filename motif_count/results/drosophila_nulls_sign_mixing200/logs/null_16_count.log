@@ -1,0 +1,34 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing200/work/null_16.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing200/work/null_16.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 48/52009, 124878848 jobs completed
+GPU search: anchor 48/52009, 265322496 jobs completed
+GPU search: anchor 48/52009, 427294720 jobs completed
+GPU search: anchor 48/52009, 576618496 jobs completed
+GPU search: anchor 51/52009, 715948032 jobs completed
+GPU search: anchor 109/52009, 827981824 jobs completed
+GPU search: anchor 360/52009, 911769600 jobs completed
+GPU search: anchor 360/52009, 1035599872 jobs completed
+GPU search: anchor 360/52009, 1195212800 jobs completed
+GPU search: anchor 360/52009, 1350926336 jobs completed
+GPU search: anchor 360/52009, 1483276288 jobs completed
+GPU search: anchor 545/52009, 1592229888 jobs completed
+GPU search: anchor 1172/52009, 1649377280 jobs completed
+GPU search: anchor 1205/52009, 1740865536 jobs completed
+GPU search: anchor 1652/52009, 1827405824 jobs completed
+GPU search: anchor 2547/52009, 1885667328 jobs completed
+GPU search: anchor 3299/52009, 1943142400 jobs completed
+GPU search: anchor 4297/52009, 2003730432 jobs completed
+GPU search: anchor 6647/52009, 2039644160 jobs completed
+GPU search: anchor 12273/52009, 2057273344 jobs completed
+GPU search: anchor 20230/52009, 2066382848 jobs completed
+Search time: 109s
+Raw mapping count:                    3741560
+Distinct biological motifs:           3741560
+STATS raw=3741560 distinct=3741560 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 3741560  MOTIF_COUNT_DISTINCT 3741560

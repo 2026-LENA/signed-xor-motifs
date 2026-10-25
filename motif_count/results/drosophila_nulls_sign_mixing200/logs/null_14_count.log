@@ -1,0 +1,33 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing200/work/null_14.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_mixing200/work/null_14.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 64/52009, 130482176 jobs completed
+GPU search: anchor 107/52009, 254705664 jobs completed
+GPU search: anchor 127/52009, 370704384 jobs completed
+GPU search: anchor 127/52009, 496599040 jobs completed
+GPU search: anchor 127/52009, 648839168 jobs completed
+GPU search: anchor 127/52009, 799342592 jobs completed
+GPU search: anchor 213/52009, 907640832 jobs completed
+GPU search: anchor 698/52009, 975273984 jobs completed
+GPU search: anchor 1131/52009, 1050804224 jobs completed
+GPU search: anchor 1332/52009, 1138393088 jobs completed
+GPU search: anchor 1360/52009, 1232535552 jobs completed
+GPU search: anchor 1360/52009, 1386217472 jobs completed
+GPU search: anchor 1360/52009, 1537867776 jobs completed
+GPU search: anchor 1360/52009, 1686437888 jobs completed
+GPU search: anchor 1702/52009, 1790345216 jobs completed
+GPU search: anchor 2886/52009, 1844281344 jobs completed
+GPU search: anchor 4623/52009, 1887961088 jobs completed
+GPU search: anchor 7359/52009, 1918730240 jobs completed
+GPU search: anchor 11726/52009, 1938882560 jobs completed
+GPU search: anchor 19008/52009, 1949106176 jobs completed
+Search time: 105s
+Raw mapping count:                    6824170
+Distinct biological motifs:           6824170
+STATS raw=6824170 distinct=6824170 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 6824170  MOTIF_COUNT_DISTINCT 6824170
