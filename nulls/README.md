@@ -44,9 +44,42 @@ Use the default `--collapse nt` only when a neurotransmitter-typed multigraph
 is intentional. In that representation, a directed pair carrying both GABA
 and GLUT remains two inhibitory edge records to the motif counter.
 
-### 2. Run a checkpointed null experiment
+### 2. Audit FlyWire cell-class blocks
 
-Build the CUDA counter, then run the signed-degree null:
+Download the version-locked v783 publication annotations:
+
+```bash
+curl -L --fail \
+  https://raw.githubusercontent.com/flyconnectome/flywire_annotations/main/supplemental_files/Supplemental_file1_neuron_annotations.tsv \
+  -o data/drosophila/flywire_fafb_v783_neuron_annotations.tsv
+```
+
+The Codex API also exposes a live `consolidated_cell_types` table, but currently
+requires an authenticated Codex session. The publication export above is the
+official, reproducible v783 fallback and contains the hierarchy columns used
+here: `super_class`, `cell_class`, `cell_sub_class`, and `cell_type`.
+
+Audit annotation coverage and whether sign/source-class/target-class blocks
+contain enough edges and distinct endpoints for double-edge swaps:
+
+```bash
+python3 nulls/analyze_drosophila_class_blocks.py \
+  data/drosophila/flywire_fafb_v783_connections_sign_normalized.csv \
+  data/drosophila/flywire_fafb_v783_neuron_annotations.tsv \
+  --report-json motif_count/results/drosophila_flywire_v783_class_block_audit_2026-10-25.json \
+  --report-md motif_count/results/drosophila_flywire_v783_class_block_audit_2026-10-25.md
+```
+
+For the 134,181-neuron graph, `super_class` is the selected level: it annotates
+134,171 neurons (99.99%), covers 99.997% of signed edges at both endpoints,
+and leaves only 34 of 2,708,051 signed edges in structurally frozen blocks.
+`cell_class` and `cell_sub_class` cover only 76.41% and 18.43% of graph nodes;
+resolved `cell_type` creates 441,749 blocks and freezes 271,654 edges.
+
+### 3. Run a checkpointed null experiment
+
+Build the CUDA counter, then run the selected class-constrained signed-degree
+null:
 
 ```bash
 make -C motif_count cuda
@@ -55,12 +88,21 @@ python3 nulls/run_drosophila_nulls.py \
   data/drosophila/flywire_fafb_v783_connections_sign_normalized.csv \
   --nulls 100 \
   --mixing 100 \
-  --mode lump-inhibitory \
-  --output-dir motif_count/results/drosophila_nulls_sign
+  --mode class-block \
+  --annotations data/drosophila/flywire_fafb_v783_neuron_annotations.tsv \
+  --class-field super_class \
+  --output-dir motif_count/results/drosophila_nulls_sign_super_class
 ```
 
-`lump-inhibitory` uses one ACH layer and one combined GABA/GLUT inhibitory
-layer, preserving signed in/out degree. For a neurotransmitter-typed
+`class-block` partitions edges by canonical sign, source class, and target
+class. It performs `(u,v),(x,y) -> (u,y),(x,v)` swaps only inside a partition,
+rejecting self-loops and duplicate signed edges. This preserves every neuron’s
+signed in/out degree and, more strictly, its signed edge counts to and from
+each `super_class`. Missing labels share an explicit `__UNANNOTATED__` class.
+Other neurotransmitters remain fixed unless `--include-other` is passed.
+
+For an unconstrained signed baseline, `lump-inhibitory` uses one ACH layer and
+one combined GABA/GLUT inhibitory layer. For a neurotransmitter-typed
 sensitivity analysis, pair `--collapse nt` with `--mode by-nt`; that also
 preserves incoming degree separately for GABA and GLUT.
 
@@ -76,7 +118,7 @@ The runner:
 Do not reuse an output directory with different settings or binaries; the
 manifest check will reject it.
 
-### 3. Interpret the statistics
+### 4. Interpret the statistics
 
 The empirical enrichment p-value is
 `(1 + number of null counts >= observed) / (N + 1)`. Thus 10 nulls cannot
@@ -95,9 +137,9 @@ match.
 python3 nulls/tests/test_drosophila_workflow.py -v
 ```
 
-The tests cover normalization, sign collapsing, per-layer degree
-preservation, summary parsing, checkpointing, and extension of an existing
-experiment.
+The tests cover normalization, sign collapsing, per-layer and class-block
+degree preservation, hierarchy selection, manifest hashing, summary parsing,
+checkpointing, and extension of an existing experiment.
 
 ## Data
 

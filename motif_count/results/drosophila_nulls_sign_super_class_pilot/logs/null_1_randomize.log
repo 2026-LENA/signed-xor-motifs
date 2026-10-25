@@ -1,0 +1,11 @@
+$ /home/kovalenko/signed-xor-motifs/nulls/randomize_drosophila /home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_connections_sign_normalized.csv --out /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_super_class_pilot/work/null_1.csv.partial --seed 1 --mixing 100 --class-block --annotations /home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_neuron_annotations.tsv --class-field super_class
+Mode: class-block (signed source/target class blocks)
+Annotations: /home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_neuron_annotations.tsv (field super_class)
+Reading /home/kovalenko/signed-xor-motifs/data/drosophila/flywire_fafb_v783_connections_sign_normalized.csv ...
+Read 139248 annotations (139248 populated for super_class; 10 classes).
+Read 2782075 edges into 162 layer(s) in 1s.
+Building edge hash sets...
+  built 162 sign/class block edge sets.
+Class-block swaps: 261844932/270805100 accepted (96.69%); 16/162 blocks had no accepted swap (39 edges).
+Writing /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_super_class_pilot/work/null_1.csv.partial ...
+Done.

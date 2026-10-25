@@ -1,6 +1,8 @@
 # Downloaded and generated connectome datasets (large, reproducible artifacts)
 /data/**/*.csv
 /data/**/*.csv.gz
+/data/**/*.tsv
+/data/**/*.tsv.gz
 /data/**/*.h5
 /data/**/*.xlsx
 

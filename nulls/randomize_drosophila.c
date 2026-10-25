@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 200809L
+
 /*
  * randomize_drosophila.c
  *
@@ -28,6 +30,13 @@
  *       Use this mode with sign-collapsed input for a simple signed-graph
  *       null model.
  *
+ *   --class-block
+ *       The same EXC/INH signed layers as --lump-inhibitory, subdivided by
+ *       (source class, target class) from a FlyWire annotation TSV. Swaps are
+ *       confined to one sign/class block, preserving signed in/out degree and
+ *       each neuron's signed degree to every source/target class. Requires
+ *       --annotations FILE and --class-field NAME.
+ *
  *   --include-other
  *       By default, edges with nt_type not in {ACH, GABA, GLUT} are kept
  *       as-is and not randomized (consistent with the Python script which
@@ -43,7 +52,8 @@
  *
  * Usage:
  *   ./randomize_drosophila in.csv --out out.csv --seed N \
- *       [--mixing 100] [--by-nt | --lump-inhibitory] [--include-other] [-q]
+ *       [--mixing 100] [--by-nt | --lump-inhibitory | --class-block] \
+ *       [--annotations FILE --class-field NAME] [--include-other] [-q]
  */
 
 #include <stdio.h>
@@ -200,8 +210,9 @@ static inline void es_remove(edgeset_t *S, int s, int d){
 
 /* ---------- per-layer container indexed by nt-type string ---------- */
 #define MAX_NT_LEN 16
+#define MAX_LAYER_NAME 64
 typedef struct layer {
-    char nt[MAX_NT_LEN];   /* e.g. "ACH", "GABA", "GLUT", or "EXC", "INH" */
+    char nt[MAX_LAYER_NAME]; /* sign/NT name, optionally with numeric class IDs */
     int  randomize;        /* 1 = swap edges in this layer; 0 = leave alone */
     edgelist_t E;
     edgeset_t  S;
@@ -216,7 +227,7 @@ static layer_t *get_layer(const char *nt, int randomize){
     HASH_FIND_STR(layers, nt, L);
     if(L) return L;
     L = (layer_t*)calloc(1,sizeof(layer_t));
-    strncpy(L->nt, nt, MAX_NT_LEN-1);
+    strncpy(L->nt, nt, MAX_LAYER_NAME-1);
     L->randomize = randomize;
     HASH_ADD_STR(layers, nt, L);
     n_layers++;
@@ -224,10 +235,49 @@ static layer_t *get_layer(const char *nt, int randomize){
 }
 
 /* ---------- options ---------- */
-typedef enum { MODE_BY_NT, MODE_LUMP_INH } rand_mode_t;
+typedef enum { MODE_BY_NT, MODE_LUMP_INH, MODE_CLASS_BLOCK } rand_mode_t;
 static rand_mode_t mode = MODE_BY_NT;
 static int    include_other = 0;
 static int    quiet = 0;
+static const char *annotations_path = NULL;
+static const char *class_field = NULL;
+
+/* ---------- root ID -> class ID annotation map ---------- */
+typedef struct annotation_entry {
+    char *root_id;
+    int class_id;
+    UT_hash_handle hh;
+} annotation_entry_t;
+
+typedef struct class_label_entry {
+    char *label;
+    int id;
+    UT_hash_handle hh;
+} class_label_entry_t;
+
+static annotation_entry_t *annotations = NULL;
+static class_label_entry_t *class_labels = NULL;
+static int next_class_id = 0;
+static int missing_class_id = -1;
+
+static int intern_class_label(const char *label){
+    class_label_entry_t *entry;
+    HASH_FIND_STR(class_labels,label,entry);
+    if(entry) return entry->id;
+    entry=(class_label_entry_t*)malloc(sizeof(class_label_entry_t));
+    if(!entry){fprintf(stderr,"OOM class label\n");exit(1);}
+    entry->label=strdup(label);
+    if(!entry->label){fprintf(stderr,"OOM class label string\n");exit(1);}
+    entry->id=next_class_id++;
+    HASH_ADD_KEYPTR(hh,class_labels,entry->label,strlen(entry->label),entry);
+    return entry->id;
+}
+
+static int class_id_for_root(const char *root_id){
+    annotation_entry_t *entry;
+    HASH_FIND_STR(annotations,root_id,entry);
+    return entry ? entry->class_id : missing_class_id;
+}
 
 /* All edges, in original CSV order, so we can write them back faithfully.
    Each entry stores: (src, dst, layer_ptr, edge_index_in_layer). */
@@ -278,6 +328,16 @@ static int split_csv(char *line, char *out[], int max_fields){
     }
     return k;
 }
+static int split_tsv(char *line, char *out[], int max_fields){
+    int k=0; char *p=line;
+    while(k<max_fields){
+        out[k++]=p;
+        char *tab=strchr(p,'\t');
+        if(!tab) break;
+        *tab=0; p=tab+1;
+    }
+    return k;
+}
 /* Trim trailing whitespace/quotes from a field; returns pointer into
    possibly-shifted string (we don't allocate). */
 static char *trim_field(char *s){
@@ -287,12 +347,78 @@ static char *trim_field(char *s){
     return s;
 }
 
+static void read_annotations(const char *path, const char *field_name){
+    FILE *fp=fopen(path,"r");
+    if(!fp){perror(path);exit(1);}
+    char *line=NULL;
+    size_t line_cap=0;
+    ssize_t length=getline(&line,&line_cap,fp);
+    if(length<0){
+        fprintf(stderr,"Empty annotation table: %s\n",path);
+        fclose(fp); free(line); exit(1);
+    }
+    rstrip(line);
+    char *fields[128];
+    int nf=split_tsv(line,fields,128);
+    int root_col=-1, class_col=-1;
+    for(int i=0;i<nf;i++){
+        char *name=trim_field(fields[i]);
+        if(!strcmp(name,"root_id")) root_col=i;
+        if(!strcmp(name,field_name)) class_col=i;
+    }
+    if(root_col<0 || class_col<0){
+        fprintf(stderr,"Annotation table must contain root_id and %s columns\n",field_name);
+        fclose(fp); free(line); exit(1);
+    }
+
+    missing_class_id=intern_class_label("__UNANNOTATED__");
+    size_t rows=0, populated=0;
+    while((length=getline(&line,&line_cap,fp))>=0){
+        rstrip(line);
+        if(!line[0]) continue;
+        nf=split_tsv(line,fields,128);
+        if(root_col>=nf || class_col>=nf){
+            fprintf(stderr,"Malformed annotation row %zu in %s\n",rows+2,path);
+            fclose(fp); free(line); exit(1);
+        }
+        char *root_id=trim_field(fields[root_col]);
+        char *label=trim_field(fields[class_col]);
+        if(!root_id[0]){
+            fprintf(stderr,"Empty root_id at annotation row %zu\n",rows+2);
+            fclose(fp); free(line); exit(1);
+        }
+        annotation_entry_t *existing;
+        HASH_FIND_STR(annotations,root_id,existing);
+        if(existing){
+            fprintf(stderr,"Duplicate annotation root_id %s\n",root_id);
+            fclose(fp); free(line); exit(1);
+        }
+        annotation_entry_t *entry=(annotation_entry_t*)malloc(sizeof(annotation_entry_t));
+        if(!entry){fprintf(stderr,"OOM annotation entry\n");exit(1);}
+        entry->root_id=strdup(root_id);
+        if(!entry->root_id){fprintf(stderr,"OOM annotation root ID\n");exit(1);}
+        entry->class_id=label[0] ? intern_class_label(label) : missing_class_id;
+        HASH_ADD_KEYPTR(hh,annotations,entry->root_id,strlen(entry->root_id),entry);
+        if(label[0]) populated++;
+        rows++;
+    }
+    if(ferror(fp)){
+        fprintf(stderr,"Failed while reading %s\n",path);
+        fclose(fp); free(line); exit(1);
+    }
+    if(fclose(fp)!=0){perror(path);free(line);exit(1);}
+    free(line);
+    if(!quiet)
+        fprintf(stderr,"Read %zu annotations (%zu populated for %s; %d classes).\n",
+                rows,populated,field_name,next_class_id-1);
+}
+
 /* Decide which layer name an edge of nt_type X belongs to under current mode.
    Returns: layer name string, OR NULL if this edge should not be randomized
    (e.g. nt_type "SER" with --include-other off). */
 static const char *layer_for_nt(const char *nt){
     static const char *EXC = "EXC", *INH = "INH";
-    if(mode == MODE_LUMP_INH){
+    if(mode == MODE_LUMP_INH || mode == MODE_CLASS_BLOCK){
         if(!strcmp(nt,"ACH")) return EXC;
         if(!strcmp(nt,"GABA")||!strcmp(nt,"GLUT")) return INH;
         return include_other ? nt : NULL;
@@ -360,10 +486,23 @@ static void read_csv(const char *path){
         int sid = intern_id(pre);
         int tid = intern_id(post);
 
-        const char *lname = layer_for_nt(nt);
-        if(!lname){
+        const char *base_name = layer_for_nt(nt);
+        if(!base_name){
             all_push(sid, tid, NULL, 0, nt, c2, c3);
             continue;
+        }
+        char block_name[MAX_LAYER_NAME];
+        const char *lname=base_name;
+        if(mode==MODE_CLASS_BLOCK){
+            int pre_class=class_id_for_root(pre);
+            int post_class=class_id_for_root(post);
+            int written=snprintf(block_name,sizeof(block_name),"%s|%d|%d",
+                                 base_name,pre_class,post_class);
+            if(written<0 || (size_t)written>=sizeof(block_name)){
+                fprintf(stderr,"Class-block layer name overflow\n");
+                exit(1);
+            }
+            lname=block_name;
         }
         layer_t *L = get_layer(lname, 1);
         size_t idx = L->E.n;
@@ -383,10 +522,12 @@ static void build_edgesets(void){
     HASH_ITER(hh, layers, L, tmp){
         es_init(&L->S, L->E.n);
         for(size_t i=0;i<L->E.n;i++) es_insert(&L->S, L->E.src[i], L->E.dst[i]);
-        if(!quiet)
+        if(!quiet && mode!=MODE_CLASS_BLOCK)
             fprintf(stderr, "  layer %-6s: %zu edges (set load %.2f)\n",
                     L->nt, L->E.n, (double)L->S.size/L->S.cap);
     }
+    if(!quiet && mode==MODE_CLASS_BLOCK)
+        fprintf(stderr,"  built %d sign/class block edge sets.\n",n_layers);
 }
 
 /* ---------- swap kernel ---------- */
@@ -407,14 +548,19 @@ static inline int try_swap(layer_t *L){
     return 1;
 }
 
-static void randomize_layer(layer_t *L, int mixing){
+typedef struct {
+    long long attempted;
+    long long accepted;
+} swap_stats_t;
+
+static swap_stats_t randomize_layer(layer_t *L, int mixing, int verbose){
     long long att = (long long)mixing * (long long)L->E.n;
     long long acc = 0;
     long long step = att/10; if(step<1) step=1;
     time_t t0 = time(NULL);
     for(long long t=0;t<att;t++){
         if(try_swap(L)) acc++;
-        if(!quiet && (t+1)%step==0){
+        if(verbose && (t+1)%step==0){
             time_t now=time(NULL);
             double sec=difftime(now,t0);
             double rate = sec>0 ? (t+1)/sec : 0;
@@ -422,9 +568,11 @@ static void randomize_layer(layer_t *L, int mixing){
                     L->nt, t+1, att, 100.0*(t+1)/att, rate/1e6);
         }
     }
-    if(!quiet)
+    if(verbose)
         fprintf(stderr, "  %s done: %lld/%lld accepted (%.2f%%)\n",
                 L->nt, acc, att, 100.0*acc/att);
+    swap_stats_t result={att,acc};
+    return result;
 }
 
 /* ---------- write output ---------- *
@@ -474,6 +622,9 @@ int main(int argc, char **argv){
         else if(!strcmp(argv[i],"--mixing") && i+1<argc) mixing=atoi(argv[++i]);
         else if(!strcmp(argv[i],"--by-nt")) mode = MODE_BY_NT;
         else if(!strcmp(argv[i],"--lump-inhibitory")) mode = MODE_LUMP_INH;
+        else if(!strcmp(argv[i],"--class-block")) mode = MODE_CLASS_BLOCK;
+        else if(!strcmp(argv[i],"--annotations") && i+1<argc) annotations_path=argv[++i];
+        else if(!strcmp(argv[i],"--class-field") && i+1<argc) class_field=argv[++i];
         else if(!strcmp(argv[i],"--include-other")) include_other = 1;
         else if(!strcmp(argv[i],"-q")) quiet = 1;
         else if(argv[i][0] != '-') in_csv = argv[i];
@@ -481,18 +632,32 @@ int main(int argc, char **argv){
     if(!in_csv || !out_csv){
         fprintf(stderr,
             "Usage: %s in.csv --out out.csv --seed N [--mixing K]\n"
-            "       [--by-nt | --lump-inhibitory] [--include-other] [-q]\n",
+            "       [--by-nt | --lump-inhibitory | --class-block]\n"
+            "       [--annotations FILE --class-field NAME] [--include-other] [-q]\n",
             argv[0]);
+        return 1;
+    }
+    if(mode==MODE_CLASS_BLOCK && (!annotations_path || !class_field)){
+        fprintf(stderr,"--class-block requires --annotations FILE and --class-field NAME\n");
+        return 1;
+    }
+    if(mode!=MODE_CLASS_BLOCK && (annotations_path || class_field)){
+        fprintf(stderr,"--annotations and --class-field require --class-block\n");
         return 1;
     }
     rng_seed(seed);
 
     if(!quiet){
-        fprintf(stderr, "Mode: %s\n",
-                mode==MODE_BY_NT?"by-nt (per-NT-type layers, Dale-preserving)":
-                                 "lump-inhibitory (mouse-equivalent EXC/INH layers)");
+        const char *mode_name =
+            mode==MODE_BY_NT ? "by-nt (per-NT-type layers, Dale-preserving)" :
+            mode==MODE_LUMP_INH ? "lump-inhibitory (mouse-equivalent EXC/INH layers)" :
+                                  "class-block (signed source/target class blocks)";
+        fprintf(stderr,"Mode: %s\n",mode_name);
+        if(mode==MODE_CLASS_BLOCK)
+            fprintf(stderr,"Annotations: %s (field %s)\n",annotations_path,class_field);
         fprintf(stderr, "Reading %s ...\n", in_csv);
     }
+    if(mode==MODE_CLASS_BLOCK) read_annotations(annotations_path,class_field);
     time_t t0 = time(NULL);
     read_csv(in_csv);
     if(!quiet)
@@ -503,10 +668,24 @@ int main(int argc, char **argv){
     build_edgesets();
 
     layer_t *L,*tmp;
+    long long total_attempted=0,total_accepted=0;
+    size_t frozen_blocks=0,frozen_edges=0;
     HASH_ITER(hh, layers, L, tmp){
         if(!L->randomize) continue;
-        if(!quiet) fprintf(stderr, "Randomizing layer %s (mixing=%d)...\n", L->nt, mixing);
-        randomize_layer(L, mixing);
+        int verbose=!quiet && mode!=MODE_CLASS_BLOCK;
+        if(verbose) fprintf(stderr, "Randomizing layer %s (mixing=%d)...\n", L->nt, mixing);
+        swap_stats_t stats=randomize_layer(L,mixing,verbose);
+        total_attempted+=stats.attempted;
+        total_accepted+=stats.accepted;
+        if(stats.accepted==0){frozen_blocks++;frozen_edges+=L->E.n;}
+    }
+    if(!quiet && mode==MODE_CLASS_BLOCK){
+        double acceptance=total_attempted ? 100.0*total_accepted/total_attempted : 0.0;
+        fprintf(stderr,
+                "Class-block swaps: %lld/%lld accepted (%.2f%%); "
+                "%zu/%d blocks had no accepted swap (%zu edges).\n",
+                total_accepted,total_attempted,acceptance,
+                frozen_blocks,n_layers,frozen_edges);
     }
 
     if(!quiet) fprintf(stderr, "Writing %s ...\n", out_csv);

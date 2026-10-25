@@ -1,0 +1,29 @@
+$ /home/kovalenko/signed-xor-motifs/motif_count/build/cuda/drosophila_signed_xor_motif --gpu /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_super_class_pilot/work/null_1.csv
+Reading /home/kovalenko/signed-xor-motifs/motif_count/results/drosophila_nulls_sign_super_class_pilot/work/null_1.csv ...
+Total rows: 2782075   Nodes: 134181
+  EXC: 1610737   INH: 1097314   other (skipped): 74024
+  Source-neurons emitting EXC: 98421   INH: 66986   other: 18771
+Read in 1s
+role-6 candidates: 52009
+GPU: NVIDIA RTX A4000 (CUDA, device 0, compute 8.6); graph upload 22.4 MiB
+GPU search: anchor 10/52009, 152338432 jobs completed
+GPU search: anchor 10/52009, 301367296 jobs completed
+GPU search: anchor 113/52009, 446791680 jobs completed
+GPU search: anchor 113/52009, 612696064 jobs completed
+GPU search: anchor 333/52009, 737705984 jobs completed
+GPU search: anchor 1268/52009, 810352640 jobs completed
+GPU search: anchor 3041/52009, 857571328 jobs completed
+GPU search: anchor 7634/52009, 888504320 jobs completed
+GPU search: anchor 10674/52009, 955482112 jobs completed
+GPU search: anchor 10674/52009, 1133445120 jobs completed
+GPU search: anchor 10800/52009, 1276116992 jobs completed
+GPU search: anchor 10811/52009, 1437794304 jobs completed
+GPU search: anchor 11386/52009, 1517060096 jobs completed
+GPU search: anchor 11778/52009, 1579843584 jobs completed
+GPU search: anchor 13866/52009, 1624670208 jobs completed
+GPU search: anchor 21880/52009, 1642168320 jobs completed
+Search time: 84s
+Raw mapping count:                    5892248
+Distinct biological motifs:           5892248
+STATS raw=5892248 distinct=5892248 rows=2782075 nodes=134181 exc_conn=1610737 inh_conn=1097314 other_conn=74024 exc_neur=98421 inh_neur=66986 other_neur=18771
+MOTIF_COUNT_RAW 5892248  MOTIF_COUNT_DISTINCT 5892248

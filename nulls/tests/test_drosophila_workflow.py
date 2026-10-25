@@ -17,6 +17,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 NORMALIZER = ROOT / "nulls" / "normalize_drosophila.py"
+CLASS_AUDITOR = ROOT / "nulls" / "analyze_drosophila_class_blocks.py"
 RUNNER = ROOT / "nulls" / "run_drosophila_nulls.py"
 RANDOMIZER_SOURCE = ROOT / "nulls" / "randomize_drosophila.c"
 
@@ -39,6 +40,29 @@ def write_csv(path: Path, rows: list[tuple[object, ...]]) -> None:
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8", newline="") as stream:
         return list(csv.DictReader(stream))
+
+
+def write_annotations(path: Path, classes: dict[str, str]) -> None:
+    fields = (
+        "root_id",
+        "super_class",
+        "cell_class",
+        "cell_sub_class",
+        "cell_type",
+    )
+    with path.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, delimiter="\t", fieldnames=fields)
+        writer.writeheader()
+        for root_id, super_class in classes.items():
+            writer.writerow(
+                {
+                    "root_id": root_id,
+                    "super_class": super_class,
+                    "cell_class": "",
+                    "cell_sub_class": "",
+                    "cell_type": "",
+                }
+            )
 
 
 def run(*command: object, success: bool = True) -> subprocess.CompletedProcess[str]:
@@ -339,6 +363,209 @@ class DrosophilaWorkflowTests(unittest.TestCase):
                 if sign(row) != "OTHER"
             ],
         )
+
+    def test_class_block_randomizer_preserves_block_degrees(self) -> None:
+        source = self.directory / "source.csv"
+        output = self.directory / "randomized.csv"
+        annotations = self.directory / "annotations.tsv"
+        classes = {
+            **{f"a{index}": "A" for index in range(1, 5)},
+            **{f"b{index}": "B" for index in range(1, 5)},
+            **{f"c{index}": "C" for index in range(1, 4)},
+            "other_source": "A",
+            "other_target": "C",
+        }
+        write_annotations(annotations, classes)
+        rows = [
+            (f"a{index}", f"b{index}", "A", 1, "ACH")
+            for index in range(1, 5)
+        ]
+        rows += [
+            (f"a{index}", f"c{index}", "A", 1, "ACH")
+            for index in range(1, 5)
+        ]
+        rows += [
+            (f"b{index}", f"a{index}", "A", 1, "GABA")
+            for index in range(1, 5)
+        ]
+        rows.append(("other_source", "other_target", "A", 1, "SER"))
+        write_csv(source, rows)
+
+        run(
+            self.randomizer,
+            source,
+            "--out",
+            output,
+            "--seed",
+            17,
+            "--mixing",
+            50,
+            "--class-block",
+            "--annotations",
+            annotations,
+            "--class-field",
+            "super_class",
+            "-q",
+        )
+
+        def sign(row: dict[str, str]) -> str:
+            if row["nt_type"] == "ACH":
+                return "EXC"
+            if row["nt_type"] in {"GABA", "GLUT"}:
+                return "INH"
+            return "OTHER"
+
+        before = read_csv(source)
+        after = read_csv(output)
+
+        def class_label(node: str) -> str:
+            return classes.get(node, "__UNANNOTATED__")
+
+        for endpoint, other_endpoint in (
+            ("pre_root_id", "post_root_id"),
+            ("post_root_id", "pre_root_id"),
+        ):
+            self.assertEqual(
+                Counter(
+                    (
+                        row[endpoint],
+                        sign(row),
+                        class_label(row[other_endpoint]),
+                    )
+                    for row in after
+                    if sign(row) != "OTHER"
+                ),
+                Counter(
+                    (
+                        row[endpoint],
+                        sign(row),
+                        class_label(row[other_endpoint]),
+                    )
+                    for row in before
+                    if sign(row) != "OTHER"
+                ),
+            )
+        signed_edges = [
+            (row["pre_root_id"], row["post_root_id"], sign(row))
+            for row in after
+            if sign(row) != "OTHER"
+        ]
+        self.assertEqual(len(signed_edges), len(set(signed_edges)))
+        self.assertEqual(
+            [row for row in after if sign(row) == "OTHER"],
+            [row for row in before if sign(row) == "OTHER"],
+        )
+        self.assertNotEqual(
+            signed_edges,
+            [
+                (row["pre_root_id"], row["post_root_id"], sign(row))
+                for row in before
+                if sign(row) != "OTHER"
+            ],
+        )
+
+    def test_class_block_auditor_selects_coarsest_covered_field(self) -> None:
+        source = self.directory / "source.csv"
+        annotations = self.directory / "annotations.tsv"
+        report_path = self.directory / "audit.json"
+        write_csv(
+            source,
+            [
+                ("a1", "b1", "A", 1, "ACH"),
+                ("a2", "b2", "A", 1, "ACH"),
+                ("a3", "b3", "A", 1, "ACH"),
+                ("a4", "b4", "A", 1, "ACH"),
+            ],
+        )
+        write_annotations(
+            annotations,
+            {
+                **{f"a{index}": "A" for index in range(1, 5)},
+                **{f"b{index}": "B" for index in range(1, 5)},
+            },
+        )
+
+        run(
+            sys.executable,
+            CLASS_AUDITOR,
+            source,
+            annotations,
+            "--fields",
+            "super_class",
+            "cell_class",
+            "--report-json",
+            report_path,
+        )
+
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        by_field = {row["field"]: row for row in report["fields"]}
+        self.assertEqual(report["recommended_field"], "super_class")
+        self.assertEqual(by_field["super_class"]["graph_node_coverage"], 1.0)
+        self.assertEqual(
+            by_field["super_class"]["signed_edge_annotation_coverage"], 1.0
+        )
+        self.assertEqual(by_field["super_class"]["eligible_edge_fraction"], 1.0)
+        self.assertEqual(by_field["cell_class"]["graph_node_coverage"], 0.0)
+
+    def test_runner_records_class_block_manifest(self) -> None:
+        source = self.directory / "normalized.csv"
+        annotations = self.directory / "annotations.tsv"
+        write_csv(source, [(1, 2, "AGGREGATED", 1, "ACH")])
+        write_annotations(annotations, {"1": "A", "2": "B"})
+        fake_randomizer = self.directory / "fake_randomizer.py"
+        fake_counter = self.directory / "fake_counter.py"
+        fake_randomizer.write_text(
+            "#!/usr/bin/env python3\n"
+            "from pathlib import Path\n"
+            "import shutil, sys\n"
+            "args = sys.argv[1:]\n"
+            "shutil.copyfile(Path(args[0]), Path(args[args.index(\"--out\") + 1]))\n",
+            encoding="utf-8",
+        )
+        fake_counter.write_text(
+            "#!/usr/bin/env python3\n"
+            "print(\"MOTIF_COUNT_RAW 9  MOTIF_COUNT_DISTINCT 9\")\n",
+            encoding="utf-8",
+        )
+        fake_randomizer.chmod(0o755)
+        fake_counter.chmod(0o755)
+        results = self.directory / "results"
+
+        run(
+            sys.executable,
+            RUNNER,
+            source,
+            "--nulls",
+            1,
+            "--mixing",
+            1,
+            "--mode",
+            "class-block",
+            "--annotations",
+            annotations,
+            "--class-field",
+            "super_class",
+            "--randomizer",
+            fake_randomizer,
+            "--counter",
+            fake_counter,
+            "--output-dir",
+            results,
+            "--observed-count",
+            10,
+        )
+
+        manifest = json.loads(
+            (results / "manifest.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(manifest["schema_version"], 2)
+        self.assertEqual(manifest["mode"], "class-block")
+        self.assertEqual(manifest["class_field"], "super_class")
+        self.assertEqual(manifest["annotations"]["path"], str(annotations.resolve()))
+        self.assertEqual(len(manifest["annotations"]["sha256"]), 64)
+        summary = (results / "summary.md").read_text(encoding="utf-8")
+        self.assertIn("super_class", summary)
+        self.assertIn(str(annotations.resolve()), summary)
 
     def test_runner_checkpoints_and_extends_an_experiment(self) -> None:
         source = self.directory / "normalized.csv"

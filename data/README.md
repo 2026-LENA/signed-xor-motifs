@@ -1,7 +1,8 @@
 # Local connectome datasets
 
 The large files in this directory are local, reproducible artifacts and are
-ignored by Git. They were downloaded and verified on 2026-10-07.
+ignored by Git. Connectomes were downloaded and verified on 2026-10-07; the
+FlyWire annotation export was downloaded and verified on 2026-10-25.
 
 ## Ready-to-use inputs
 
@@ -52,6 +53,24 @@ its provider MD5 is `41206440318c77418bfc7cff1cb3e0fa`.
   data/drosophila/flywire_fafb_v783_connections.csv
 ```
 
+The local `drosophila/flywire_fafb_v783_neuron_annotations.tsv` contains
+139,248 v783 neuron annotation rows from the official
+[FlyWire annotation repository](https://github.com/flyconnectome/flywire_annotations),
+publication supplemental file 1. It is a version-locked alternative to the
+Codex `consolidated_cell_types` download, which currently requires an
+authenticated Codex session. Recreate it with:
+
+```bash
+curl -L --fail \
+  https://raw.githubusercontent.com/flyconnectome/flywire_annotations/main/supplemental_files/Supplemental_file1_neuron_annotations.tsv \
+  -o data/drosophila/flywire_fafb_v783_neuron_annotations.tsv
+```
+
+The relevant hierarchy columns are `super_class`, `cell_class`,
+`cell_sub_class`, and resolved `cell_type`. Their coverage and swap-block
+sizes are recorded in
+`motif_count/results/drosophila_flywire_v783_class_block_audit_2026-10-25.md`.
+
 ### C. elegans
 
 Connectivity and weights come from the official
@@ -89,6 +108,8 @@ python3 motif_count/scripts/prepare_celegans.py \
 ```text
 d49dd692e59e153aa3c83f5257bfc0eff51247b86d7bb183386c6d1622c70fc9  drosophila/flywire_fafb_v783_connections.csv.gz
 dbe2552790e30e97746c8aa990aa4dfebc33cafb4748885cc2ee13e2319f587a  drosophila/flywire_fafb_v783_connections.csv
+2d86d7e09c6f55b29b0da60f7f8ac9c71b2c37f1bcb85cc7ebce2bbe4e9e0db6  drosophila/flywire_fafb_v783_connections_sign_normalized.csv
+b214970b55d2fbe0853bba536fdcb9e28730f4eb7ab06f600491df795da683cd  drosophila/flywire_fafb_v783_neuron_annotations.tsv
 86d3f24c77752b1f7df4b26cdf9583461fe7e8fc76f86d2d81b3879cdaa0e389  celegans/raw/Cook_et_al_2019_SI5_connectome_adjacency_matrices.xlsx
 8748f968d759157e9e955b325d59314cc0ad8f4bf4501521f380a73a674c66ff  celegans/raw/Fenyves_et_al_2020_sign_predictions.csv
 a1789e18ec81c3de8ac430dcd624e16c35ddcb7d3cac976c76120fa1121b27d0  celegans/cook2019_hermaphrodite_chemical_nt_approx.csv

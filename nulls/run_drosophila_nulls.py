@@ -27,7 +27,8 @@ import time
 
 
 COUNT_PATTERN = re.compile(r"^MOTIF_COUNT_RAW\s+(\d+)", re.MULTILINE)
-MANIFEST_VERSION = 1
+LEGACY_MANIFEST_VERSION = 1
+CLASS_BLOCK_MANIFEST_VERSION = 2
 
 
 def sha256_file(path: Path, chunk_size: int = 8 * 1024 * 1024) -> str:
@@ -145,6 +146,13 @@ def render_summary(summary: dict, manifest: dict) -> str:
     )
     table = "\n".join(f"| {name} | {format_value(value)} |" for name, value in rows)
     induced = "yes" if manifest["induced"] else "no"
+    annotation_rows = ""
+    if "annotations" in manifest:
+        annotation_rows = (
+            f"| Annotations | `{manifest['annotations']['path']}` |\n"
+            f"| Annotation SHA-256 | `{manifest['annotations']['sha256']}` |\n"
+            f"| Class field | `{manifest['class_field']}` |\n"
+        )
     return f"""# Drosophila signed-XOR null experiment
 
 This file is generated after every completed null count.
@@ -153,7 +161,7 @@ This file is generated after every completed null count.
 |---|---|
 | Input | `{manifest['input']}` |
 | Input SHA-256 | `{manifest['input_sha256']}` |
-| Randomization mode | `{manifest['mode']}` |
+{annotation_rows}| Randomization mode | `{manifest['mode']}` |
 | Mixing attempts per edge | {manifest['mixing']} |
 | Other neurotransmitters randomized | {manifest['include_other']} |
 | Induced motif search | {induced} |
@@ -243,12 +251,23 @@ def executable_identity(path: Path) -> dict:
     return {"path": str(resolved), "sha256": sha256_file(resolved)}
 
 
+def file_identity(path: Path) -> dict:
+    resolved = path.resolve()
+    if not resolved.is_file():
+        raise FileNotFoundError(resolved)
+    return {"path": str(resolved), "sha256": sha256_file(resolved)}
+
+
 def build_manifest(args: argparse.Namespace) -> dict:
     input_path = args.input.resolve()
     if not input_path.is_file():
         raise FileNotFoundError(input_path)
-    return {
-        "schema_version": MANIFEST_VERSION,
+    manifest = {
+        "schema_version": (
+            CLASS_BLOCK_MANIFEST_VERSION
+            if args.mode == "class-block"
+            else LEGACY_MANIFEST_VERSION
+        ),
         "input": str(input_path),
         "input_sha256": sha256_file(input_path),
         "randomizer": executable_identity(args.randomizer),
@@ -259,6 +278,10 @@ def build_manifest(args: argparse.Namespace) -> dict:
         "induced": args.induced,
         "seed_start": args.seed_start,
     }
+    if args.mode == "class-block":
+        manifest["annotations"] = file_identity(args.annotations)
+        manifest["class_field"] = args.class_field
+    return manifest
 
 
 def load_or_create_manifest(path: Path, expected: dict) -> dict:
@@ -292,7 +315,20 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--nulls", type=int, required=True, help="total nulls desired")
     parser.add_argument("--seed-start", type=int, default=1)
     parser.add_argument("--mixing", type=int, default=100)
-    parser.add_argument("--mode", choices=("by-nt", "lump-inhibitory"), default="by-nt")
+    parser.add_argument(
+        "--mode",
+        choices=("by-nt", "lump-inhibitory", "class-block"),
+        default="by-nt",
+    )
+    parser.add_argument(
+        "--annotations",
+        type=Path,
+        help="FlyWire annotation TSV (required for --mode class-block)",
+    )
+    parser.add_argument(
+        "--class-field",
+        help="annotation column used for class blocks (for example super_class)",
+    )
     parser.add_argument("--include-other", action="store_true")
     parser.add_argument("--induced", action="store_true")
     parser.add_argument(
@@ -333,6 +369,19 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     if args.observed_count is not None and args.observed_count < 0:
         print("error: --observed-count cannot be negative", file=sys.stderr)
+        return 2
+    if args.mode == "class-block":
+        if args.annotations is None or not args.class_field:
+            print(
+                "error: --mode class-block requires --annotations and --class-field",
+                file=sys.stderr,
+            )
+            return 2
+    elif args.annotations is not None or args.class_field is not None:
+        print(
+            "error: --annotations and --class-field require --mode class-block",
+            file=sys.stderr,
+        )
         return 2
 
     output_dir = args.output_dir.resolve()
@@ -413,6 +462,15 @@ def main(argv: list[str] | None = None) -> int:
             ]
             if args.include_other:
                 randomizer_command.append("--include-other")
+            if args.mode == "class-block":
+                randomizer_command.extend(
+                    [
+                        "--annotations",
+                        manifest["annotations"]["path"],
+                        "--class-field",
+                        manifest["class_field"],
+                    ]
+                )
             randomize_started = time.monotonic()
             run_logged(
                 randomizer_command,
